@@ -4,10 +4,24 @@
 
 package frc.robot;
 
+import frc.robot.commands.DriveWithGamepad;
+import frc.robot.commands.DriveWithJoystick;
+import frc.robot.Constants.CameraConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.Constants.PneumaticsConstants;
+import frc.robot.subsystems.DriveTrain;
+
+import java.util.Optional;
+
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -20,18 +34,109 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer
 {
-    // The robot's subsystems and commands are defined here...
-    private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+    // Pneumatics:
+    private final Optional<Compressor> compressor;
 
-    // Replace with CommandPS4Controller or CommandJoystick if needed
-    private final CommandXboxController m_driverController = new CommandXboxController(
-                    OperatorConstants.kDriverControllerPort);
+    // Subsystems:
+    private final Optional<DriveTrain> driveTrain;
+
+    // OI devices:
+    private final XboxController driverGamepad;
+    private final XboxController codriverGamepad;
+    private final Joystick driverJoystick;
+
+    SendableChooser<Boolean> driveOrientationChooser = new SendableChooser<>();
+    SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
+        // Get the game data message fom the driver station.
+        // This message is primarily used during development to
+        // construct only certain subsystems.
+        // If the message is blank (or all whitespace),
+        // all subsystems are constructed.
+        // Otherwise, OI devices and subsystems are constructed
+        // depending upon the substrings found in the message:
+        // -dt- Drive train
+        // -oi- Look for OI devices
+        // -i- Intake
+        // -idx- Indexer
+        // -m- Manipulator
+        // -p- Pneumatics
+        // -cam- Camera
+        // -c- Climber
+
+        var gameData = DriverStation.getGameSpecificMessage().toLowerCase();
+        SmartDashboard.putString("Game Data", gameData);
+
+        // Start a camera server for a simple USB camera:
+        if (gameData.contains("-cam-") || gameData.isBlank())
+        {
+            var camera = CameraServer.startAutomaticCapture();
+            camera.setFPS(CameraConstants.fps);
+            camera.setResolution(CameraConstants.width, CameraConstants.height);
+        }
+
+        // Create OI devices:
+        if (gameData.contains("-oi-"))
+        {
+            // Explicitly look for OI devices:
+            driverGamepad = DriverStation.isJoystickConnected(OperatorConstants.driverGamepadPort)
+                            ? new XboxController(OperatorConstants.driverGamepadPort)
+                            : null;
+            driverJoystick = DriverStation.isJoystickConnected(OperatorConstants.driverJoystickPort)
+                            ? new Joystick(OperatorConstants.driverJoystickPort)
+                            : null;
+            codriverGamepad = DriverStation.isJoystickConnected(OperatorConstants.codriverGamepadPort)
+                            ? new XboxController(OperatorConstants.codriverGamepadPort)
+                            : null;
+        }
+        else
+        {
+            // In competition, don't take chances and always create all OI devices:
+            codriverGamepad = new XboxController(OperatorConstants.codriverGamepadPort);
+            driverGamepad = null;
+            driverJoystick = null;
+        }
+        // Create pneumatics compressor:
+        compressor = gameData.isBlank() || gameData.contains("-p-")
+                        ? Optional.of(new Compressor(PneumaticsConstants.moduleId, PneumaticsConstants.moduleType))
+                        : Optional.empty();
+
+        // Create subsystems:
+        driveTrain = gameData.isBlank() || gameData.contains("-dt-")
+                        ? Optional.of(new DriveTrain())
+                        : Optional.empty();
+
+        // Configure default commands
+        configureDefaultCommands();
+
         // Configure the trigger bindings
         configureBindings();
+
+        // Configure smart dashboard
+        configureSmartDashboard();
+
+    }
+
+    /**
+     * Configures the default commands.
+     */
+    private void configureDefaultCommands()
+    {
+        driveTrain.ifPresent((dt) ->
+        {
+            if (driverJoystick != null)
+            {
+                dt.setDefaultCommand(new DriveWithJoystick(dt, driverJoystick, driveOrientationChooser));
+            }
+            else if (driverGamepad != null)
+            {
+                dt.setDefaultCommand(new DriveWithGamepad(dt, driverGamepad, driveOrientationChooser));
+            }
+
+        });
     }
 
     /**
@@ -45,13 +150,33 @@ public class RobotContainer
      */
     private void configureBindings()
     {
-        // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-        new Trigger(m_exampleSubsystem::exampleCondition)
-                        .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-        // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-        // cancelling on release.
-        m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    }
+
+    private void configureSmartDashboard()
+    {
+        driveTrain.ifPresent(this::configureSmartDashboard);
+        configureDriveOrientationChooser(driveOrientationChooser);
+        configureAutoChooser(autoChooser);
+    }
+
+    private void configureSmartDashboard(DriveTrain driveTrain)
+    {
+
+    }
+
+    private void configureDriveOrientationChooser(SendableChooser<Boolean> driveOrientationChooser)
+    {
+        driveOrientationChooser.setDefaultOption("Field Relative", Boolean.TRUE);
+        driveOrientationChooser.addOption("Robot Relative", Boolean.FALSE);
+        SmartDashboard.putData("Drive Orientation", driveOrientationChooser);
+    }
+
+    private void configureAutoChooser(SendableChooser<Command> autoChooser)
+    {
+        // autoChooser.setDefaultOption("Leave", new PathPlannerAuto("Leave"));
+        // autoChooser.addOption("Return", new PathPlannerAuto("Return"));
+        // SmartDashboard.putData("Auto Selection", autoChooser);
     }
 
     /**
@@ -61,7 +186,8 @@ public class RobotContainer
      */
     public Command getAutonomousCommand()
     {
+        return null;
         // An example command will be run in autonomous
-        return Autos.exampleAuto(m_exampleSubsystem);
+
     }
 }
