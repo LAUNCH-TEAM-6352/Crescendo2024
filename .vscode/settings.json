@@ -29,5 +29,7 @@
   "java.format.settings.url": "eclipse-formatter.xml",
   "editor.defaultFormatter": "redhat.java",
   "editor.autoIndent": "full",
-  "editor.detectIndentation": false
+"editor.detectIndentation": false,
+"editor.pasteAs.enabled": false,
+"editor.pasteAs.showPasteSelector": "never"
 }
