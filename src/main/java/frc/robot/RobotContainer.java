@@ -7,9 +7,12 @@ package frc.robot;
 import frc.robot.commands.DriveWithGamepad;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.Constants.CameraConstants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.PneumaticsConstants;
+import frc.robot.Constants.DashboardConstants.IntakeKeys;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
 
 import java.util.Optional;
 
@@ -39,6 +42,7 @@ public class RobotContainer
 
     // Subsystems:
     private final Optional<DriveTrain> driveTrain;
+    private final Optional<Intake> intake;
 
     // OI devices:
     private final XboxController driverGamepad;
@@ -109,6 +113,10 @@ public class RobotContainer
                         ? Optional.of(new DriveTrain())
                         : Optional.empty();
 
+        intake = gameData.isBlank() || gameData.contains("-i-")
+                        ? Optional.of(new Intake())
+                        : Optional.empty();
+
         // Configure default commands
         configureDefaultCommands();
 
@@ -156,6 +164,9 @@ public class RobotContainer
     private void configureSmartDashboard()
     {
         driveTrain.ifPresent(this::configureSmartDashboard);
+        intake.ifPresent(this::configureSmartDashboard);
+
+        // Configure chooser widgets:
         configureDriveOrientationChooser(driveOrientationChooser);
         configureAutoChooser(autoChooser);
     }
@@ -163,6 +174,14 @@ public class RobotContainer
     private void configureSmartDashboard(DriveTrain driveTrain)
     {
 
+    }
+
+    private void configureSmartDashboard(Intake intake)
+    {
+        SmartDashboard.putNumber(IntakeKeys.largeRollerIntakeRpm, IntakeConstants.largeRollerMotorIntakeRpm);
+        SmartDashboard.putNumber(IntakeKeys.largeRollerEjectRpm, IntakeConstants.largeRollerMotorEjectRpm);
+        SmartDashboard.putNumber(IntakeKeys.smallRollerIntakeRpm, IntakeConstants.smallRollerMotorIntakeRpm);
+        SmartDashboard.putNumber(IntakeKeys.smallRollerEjectRpm, IntakeConstants.smallRollerMotorEjectRpm);
     }
 
     private void configureDriveOrientationChooser(SendableChooser<Boolean> driveOrientationChooser)

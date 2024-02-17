@@ -39,7 +39,8 @@ public static final class IndexerConstants
         public static final double smallRollerMotorIntakeRpm = 2100;
         public static final double largeRollerMotorEjectRpm = -2600;
         public static final double smallRollerMotorEjectRpm = -2100;
-        public static final boolean areRollerMotorsInverted = false;
+        public static final boolean isLargeRollerMotorsInverted = false;
+        public static final boolean isSmallRollerMotorsInverted = false;
 
         public static final class PIDConstants
         {
@@ -90,5 +91,16 @@ public static final class IndexerConstants
         public static final int fps = 10;
         public static final int width = 320;
         public static final int height = 240;
+    }
+
+    public static final class DashboardConstants
+    {
+        public static final class IntakeKeys
+        {
+            public static final String largeRollerIntakeRpm = "Large Roller Intake RPM";
+            public static final String largeRollerEjectRpm = "Large Roller Eject RPM";
+            public static final String smallRollerIntakeRpm = "Small Roller Intake RPM";
+            public static final String smallRollerEjectRpm = "Small Roller Eject RPM";
+        }
     }
 }
