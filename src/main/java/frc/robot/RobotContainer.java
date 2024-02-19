@@ -6,13 +6,22 @@ package frc.robot;
 
 import frc.robot.commands.DriveWithGamepad;
 import frc.robot.commands.DriveWithJoystick;
+import frc.robot.commands.EjectNote;
+import frc.robot.commands.IntakeNote;
+import frc.robot.commands.ShootNoteIntoAmp;
+import frc.robot.commands.ShootNoteIntoSpeaker;
 import frc.robot.Constants.CameraConstants;
+import frc.robot.Constants.IndexerConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.PneumaticsConstants;
+import frc.robot.Constants.DashboardConstants.IndexerKeys;
 import frc.robot.Constants.DashboardConstants.IntakeKeys;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Manipulator;
+import frc.robot.subsystems.Shooter;
 
 import java.util.Optional;
 
@@ -23,10 +32,12 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -43,6 +54,9 @@ public class RobotContainer
     // Subsystems:
     private final Optional<DriveTrain> driveTrain;
     private final Optional<Intake> intake;
+    private final Optional<Indexer> indexer;
+    private final Optional<Manipulator> manipulator;
+    private final Optional<Shooter> shooter;
 
     // OI devices:
     private final XboxController driverGamepad;
@@ -65,6 +79,7 @@ public class RobotContainer
         // -dt- Drive train
         // -oi- Look for OI devices
         // -i- Intake
+        // -s- Shooter
         // -idx- Indexer
         // -m- Manipulator
         // -p- Pneumatics
@@ -117,6 +132,15 @@ public class RobotContainer
                         ? Optional.of(new Intake())
                         : Optional.empty();
 
+        indexer = gameData.isBlank() || gameData.contains("-idx-")
+                        ? Optional.of(new Indexer())
+                        : Optional.empty();
+        manipulator = gameData.isBlank() || gameData.contains("-m-")
+                        ? Optional.of(new Manipulator())
+                        : Optional.empty();
+        shooter = gameData.isBlank() || gameData.contains("-s-")
+                        ? Optional.of(new Shooter())
+                        : Optional.empty();
         // Configure default commands
         configureDefaultCommands();
 
@@ -158,19 +182,46 @@ public class RobotContainer
      */
     private void configureBindings()
     {
+        if (intake.isPresent() && indexer.isPresent() && manipulator.isPresent())
+        {
+            configureBindings(intake.get(), indexer.get(), manipulator.get());
+        }
+        if (indexer.isPresent() && shooter.isPresent() && manipulator.isPresent())
+        {
+            configureBindings(indexer.get(), shooter.get(), manipulator.get());
+        }
 
     }
-    private void configureBindings(Intake intake){
-        if (codriverGamepad == null){
+
+    // Configures bindings for intaking and ejecting notes.
+    private void configureBindings(Intake intake, Indexer indexer, Manipulator manipulator)
+    {
+        if (codriverGamepad == null)
+        {
             return;
         }
-        codriverGamepad.getAButtonPressed.On
+        new JoystickButton(codriverGamepad, Button.kA.value).whileTrue(new IntakeNote(intake, indexer, manipulator));
+        new JoystickButton(codriverGamepad, Button.kB.value).whileTrue(new EjectNote(intake, indexer, manipulator));
+
+    }
+
+    // Configures bindings for shooting notes into speaker and amp.
+    private void configureBindings(Indexer indexer, Shooter shooter, Manipulator manipulator)
+    {
+        if (codriverGamepad == null)
+        {
+            return;
+        }
+        new JoystickButton(codriverGamepad, Button.kY.value).onTrue(new ShootNoteIntoSpeaker(indexer, shooter, manipulator));
+        new JoystickButton(codriverGamepad, Button.kX.value).onTrue(new ShootNoteIntoAmp(indexer, shooter, manipulator));
+
     }
 
     private void configureSmartDashboard()
     {
         driveTrain.ifPresent(this::configureSmartDashboard);
         intake.ifPresent(this::configureSmartDashboard);
+        indexer.ifPresent(this::configureSmartDashboard);
 
         // Configure chooser widgets:
         configureDriveOrientationChooser(driveOrientationChooser);
@@ -188,6 +239,14 @@ public class RobotContainer
         SmartDashboard.putNumber(IntakeKeys.largeRollerEjectRpm, IntakeConstants.largeRollerMotorEjectRpm);
         SmartDashboard.putNumber(IntakeKeys.smallRollerIntakeRpm, IntakeConstants.smallRollerMotorIntakeRpm);
         SmartDashboard.putNumber(IntakeKeys.smallRollerEjectRpm, IntakeConstants.smallRollerMotorEjectRpm);
+    }
+
+    private void configureSmartDashboard(Indexer indexer)
+    {
+        SmartDashboard.putNumber(IndexerKeys.lowerRollerIntakeRpm, IndexerConstants.lowerRollerMotorIntakeRpm);
+        SmartDashboard.putNumber(IndexerKeys.lowerRollerEjectRpm, IndexerConstants.lowerRollerMotorEjectRpm);
+        SmartDashboard.putNumber(IndexerKeys.lowerRollerFeedRpm, IndexerConstants.lowerRollerMotorFeedRpm);
+        SmartDashboard.putNumber(IndexerKeys.upperRollerFeedRpm, IndexerConstants.upperRollerMotorFeedRpm);
     }
 
     private void configureDriveOrientationChooser(SendableChooser<Boolean> driveOrientationChooser)

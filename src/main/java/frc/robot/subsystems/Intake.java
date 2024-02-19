@@ -39,8 +39,8 @@ public class Intake extends SubsystemBase
         }
 
         // Apply configuration unique to large and small roller motors:
-        largeRollerMotor.setInverted(IntakeConstants.isLargeRollerMotorsInverted);
-        smallRollerMotor.setInverted(IntakeConstants.isSmallRollerMotorsInverted);
+        largeRollerMotor.setInverted(IntakeConstants.isLargeRollerMotorInverted);
+        smallRollerMotor.setInverted(IntakeConstants.isSmallRollerMotorInverted);
     }
 
     public void intake()
