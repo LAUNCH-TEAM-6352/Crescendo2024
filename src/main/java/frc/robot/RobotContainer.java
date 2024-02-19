@@ -160,6 +160,12 @@ public class RobotContainer
     {
 
     }
+    private void configureBindings(Intake intake){
+        if (codriverGamepad == null){
+            return;
+        }
+        codriverGamepad.getAButtonPressed.On
+    }
 
     private void configureSmartDashboard()
     {
