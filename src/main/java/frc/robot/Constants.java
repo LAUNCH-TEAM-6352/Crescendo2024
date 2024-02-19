@@ -27,10 +27,57 @@ public final class Constants
         public static final double joystickDeadband = 0.1;
         public static final double gamepadDeadband = 0.05;
     }
-public static final class IndexerConstants
-{
-    //indexer consists of 4 shafts. 2 coupled pairs lower pair, upper pair, one motor per pair, lower pair 51 upper pair 52. NEO 550 and CAN SparkMAX
-}
+
+    public static final class IndexerConstants
+    {
+
+        public static final int lowerRollerMotorChannel = 43;
+        public static final int upperRollerMotorChannel = 44;
+
+        // TODO: Add correct RPM values and motor inversion values
+        public static final double lowerRollerMotorIntakeRpm = 0;
+        public static final double lowerRollerMotorEjectRpm = -0;
+        public static final double lowerRollerMotorFeedRpm = 0;
+        public static final double upperRollerMotorFeedRpm = 0;
+        public static final boolean isLowerRollerMotorInverted = false;
+        public static final boolean isUpperRollerMotorInverted = false;
+
+        public static final class PIDConstants
+        {
+            public static final double kP = 6e-5;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
+            public static final int kIZ = 0;
+            public static final double kFF = 0.00005;
+            public static final double defaultMinOutput = -1;
+            public static final double defaultMaxOutput = 1;
+        }
+    }
+
+    // TODO: Add correct RPM values and motor inversion values
+    public static final class ShooterConstants
+    {
+
+        public static final int leftMotorChannel = 45;
+        public static final int rightMotorChannel = 46;
+        public static final double ampRpm = 0.0;
+        public static final double speakerRpm = 0.0;
+        public static final boolean isLeftMotorInverted = false;
+        public static final boolean isRightMotorInverted = false;
+
+        public static final class PIDConstants
+        {
+            public static final double kP = 6e-5;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
+            public static final int kIZ = 0;
+            public static final double kFF = 0.00005;
+            public static final double defaultMinOutput = -1;
+            public static final double defaultMaxOutput = 1;
+        }
+
+    }
+
     public static final class IntakeConstants
     {
         public static final int largeRollerMotorChannel = 41;
@@ -39,8 +86,8 @@ public static final class IndexerConstants
         public static final double smallRollerMotorIntakeRpm = 2100;
         public static final double largeRollerMotorEjectRpm = -2600;
         public static final double smallRollerMotorEjectRpm = -2100;
-        public static final boolean isLargeRollerMotorsInverted = false;
-        public static final boolean isSmallRollerMotorsInverted = false;
+        public static final boolean isLargeRollerMotorInverted = false;
+        public static final boolean isSmallRollerMotorInverted = false;
 
         public static final class PIDConstants
         {
@@ -101,6 +148,21 @@ public static final class IndexerConstants
             public static final String largeRollerEjectRpm = "Large Roller Eject RPM";
             public static final String smallRollerIntakeRpm = "Small Roller Intake RPM";
             public static final String smallRollerEjectRpm = "Small Roller Eject RPM";
+        }
+
+        public static final class IndexerKeys
+        {
+            public static final String lowerRollerIntakeRpm = "Lower Roller Intake RPM";
+            public static final String lowerRollerEjectRpm = "Lower Roller Eject RPM";
+            public static final String lowerRollerFeedRpm = "Lower Roller Feed RPM";
+            public static final String upperRollerFeedRpm = "Upper Roller Feed RPM";
+        }
+
+        public static final class ShooterKeys
+        {
+            public static final String ampRpm = "Amp RPM";
+            public static final String speakerRpm = "Speaker RPM";
+           
         }
     }
 }
