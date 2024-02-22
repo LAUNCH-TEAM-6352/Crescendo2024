@@ -58,7 +58,6 @@ public class DriveTrain extends SubsystemBase
     {
         // Open loop is disabled since it shouldn't be used most of the time.
         swerveDrive.drive(translation, rotation, fieldRelative, false);
-
     }
 
     // Drive the robot given a chassis field oriented velocity.

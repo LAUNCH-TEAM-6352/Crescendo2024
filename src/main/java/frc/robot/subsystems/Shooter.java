@@ -50,7 +50,6 @@ public class Shooter extends SubsystemBase
 
     public void setAmpSpeed()
     {
-
         targetVelocity = SmartDashboard.getNumber(ShooterKeys.ampRpm, ShooterConstants.ampRpm);
         lastVelocity = 0;
         leftMotor.getPIDController()
@@ -74,7 +73,7 @@ public class Shooter extends SubsystemBase
         leftMotor.stopMotor();
         rightMotor.stopMotor();
     }
-    
+
     public boolean isAtTargetVelocity()
     {
         return isAtTargetVelocity;
@@ -84,7 +83,7 @@ public class Shooter extends SubsystemBase
     public void periodic()
     {
         // This method will be called once per scheduler run
-
+        
         if (isSpinningUp)
         {
             double leftVelocity = leftMotor.getEncoder().getVelocity();

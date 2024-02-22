@@ -24,7 +24,7 @@ public class ShootNoteIntoAmp extends Command
     
     private boolean hasShooterBeenFed;
     /**
-     * TODO: Add parameter for manipulator and shooter
+     * 
      * 
      * @param indexer
      */
@@ -43,7 +43,7 @@ public class ShootNoteIntoAmp extends Command
     {
         shooter.setAmpSpeed();
         hasShooterBeenFed = false;
-        // TODO: Move manipulator to Amp position
+        manipulator.moveToAmpPosition();
 
     }
 
@@ -63,7 +63,7 @@ public class ShootNoteIntoAmp extends Command
     public void end(boolean interrupted)
     {
         indexer.stop();
-        // TODO: Move manipulator to intake position
+        manipulator.moveToIntakePosition();
         shooter.stop();
     }
 

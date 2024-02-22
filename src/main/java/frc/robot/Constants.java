@@ -30,7 +30,6 @@ public final class Constants
 
     public static final class IndexerConstants
     {
-
         public static final int lowerRollerMotorChannel = 43;
         public static final int upperRollerMotorChannel = 44;
 
@@ -57,7 +56,6 @@ public final class Constants
     // TODO: Add correct RPM values and motor inversion values
     public static final class ShooterConstants
     {
-
         public static final int leftMotorChannel = 45;
         public static final int rightMotorChannel = 46;
         public static final double ampRpm = 0.0;
@@ -76,6 +74,14 @@ public final class Constants
             public static final double defaultMaxOutput = 1;
         }
 
+    }
+
+    public static final class ManipulatorConstants
+    {
+        public static final int climbingSolenoidForwardChannel = 2;
+        public static final int climbingSolenoidReverseChannel = 3;
+        public static final int noteSolenoidForwardChannel = 0;
+        public static final int noteSolenoidReverseChannel = 1;
     }
 
     public static final class IntakeConstants
@@ -162,7 +168,7 @@ public final class Constants
         {
             public static final String ampRpm = "Amp RPM";
             public static final String speakerRpm = "Speaker RPM";
-           
+
         }
     }
 }
