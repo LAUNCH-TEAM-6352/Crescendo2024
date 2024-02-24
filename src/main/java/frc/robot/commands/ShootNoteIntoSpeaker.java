@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import java.util.jar.Manifest;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Manipulator;
@@ -27,7 +25,7 @@ public class ShootNoteIntoSpeaker extends Command
     private boolean hasShooterBeenFed;
 
     /**
-     * TODO: Add parameter for manipulator and shooter
+     *
      * 
      * @param indexer
      */
@@ -46,8 +44,7 @@ public class ShootNoteIntoSpeaker extends Command
     {
         hasShooterBeenFed = false;
         shooter.setSpeakerSpeed();
-        // TODO: Move manipulator to speaker position
-
+        manipulator.moveToSpeakerPosition();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -56,7 +53,6 @@ public class ShootNoteIntoSpeaker extends Command
     {
         if (shooter.isAtTargetVelocity() && !hasShooterBeenFed)
         {
-         
             indexer.feed();
             hasShooterBeenFed = true;
         }
@@ -67,7 +63,7 @@ public class ShootNoteIntoSpeaker extends Command
     public void end(boolean interrupted)
     {
         indexer.stop();
-        // TODO: Move manipulator to speaker position
+        manipulator.moveToIntakePosition();
         shooter.stop();
     }
 

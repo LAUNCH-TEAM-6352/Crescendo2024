@@ -18,7 +18,7 @@ public class IntakeNote extends Command
     private final Manipulator manipulator;
 
     /**
-     * TODO: Add parameters for manipulator
+     * 
      * 
      * @param intake
      */
@@ -29,16 +29,14 @@ public class IntakeNote extends Command
         this.manipulator = manipulator;
         // Specify required subsystems
         addRequirements(intake, indexer, manipulator);
-
     }
     
     @Override
     public void initialize()
     {
-        // TODO: Move manipulator to intake position
+        manipulator.moveToIntakePosition();
         indexer.intake();
         intake.intake();
-        
     }
 
     @Override
@@ -53,8 +51,6 @@ public class IntakeNote extends Command
     {
         intake.stop();
        indexer.stop();
-        // TODO: Move manipulator?
-
     }
 
     // Returns true when the command should end

@@ -36,6 +36,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -84,7 +85,6 @@ public class RobotContainer
         // -m- Manipulator
         // -p- Pneumatics
         // -cam- Camera
-        // -c- Climber
 
         var gameData = DriverStation.getGameSpecificMessage().toLowerCase();
         SmartDashboard.putString("Game Data", gameData);
@@ -102,14 +102,14 @@ public class RobotContainer
         {
             // Explicitly look for OI devices:
             driverGamepad = DriverStation.isJoystickConnected(OperatorConstants.driverGamepadPort)
-                            ? new XboxController(OperatorConstants.driverGamepadPort)
-                            : null;
+                ? new XboxController(OperatorConstants.driverGamepadPort)
+                : null;
             driverJoystick = DriverStation.isJoystickConnected(OperatorConstants.driverJoystickPort)
-                            ? new Joystick(OperatorConstants.driverJoystickPort)
-                            : null;
+                ? new Joystick(OperatorConstants.driverJoystickPort)
+                : null;
             codriverGamepad = DriverStation.isJoystickConnected(OperatorConstants.codriverGamepadPort)
-                            ? new XboxController(OperatorConstants.codriverGamepadPort)
-                            : null;
+                ? new XboxController(OperatorConstants.codriverGamepadPort)
+                : null;
         }
         else
         {
@@ -120,27 +120,27 @@ public class RobotContainer
         }
         // Create pneumatics compressor:
         compressor = gameData.isBlank() || gameData.contains("-p-")
-                        ? Optional.of(new Compressor(PneumaticsConstants.moduleId, PneumaticsConstants.moduleType))
-                        : Optional.empty();
+            ? Optional.of(new Compressor(PneumaticsConstants.moduleId, PneumaticsConstants.moduleType))
+            : Optional.empty();
 
         // Create subsystems:
         driveTrain = gameData.isBlank() || gameData.contains("-dt-")
-                        ? Optional.of(new DriveTrain())
-                        : Optional.empty();
+            ? Optional.of(new DriveTrain())
+            : Optional.empty();
 
         intake = gameData.isBlank() || gameData.contains("-i-")
-                        ? Optional.of(new Intake())
-                        : Optional.empty();
+            ? Optional.of(new Intake())
+            : Optional.empty();
 
         indexer = gameData.isBlank() || gameData.contains("-idx-")
-                        ? Optional.of(new Indexer())
-                        : Optional.empty();
+            ? Optional.of(new Indexer())
+            : Optional.empty();
         manipulator = gameData.isBlank() || gameData.contains("-m-")
-                        ? Optional.of(new Manipulator())
-                        : Optional.empty();
+            ? Optional.of(new Manipulator())
+            : Optional.empty();
         shooter = gameData.isBlank() || gameData.contains("-s-")
-                        ? Optional.of(new Shooter())
-                        : Optional.empty();
+            ? Optional.of(new Shooter())
+            : Optional.empty();
         // Configure default commands
         configureDefaultCommands();
 
@@ -190,7 +190,22 @@ public class RobotContainer
         {
             configureBindings(indexer.get(), shooter.get(), manipulator.get());
         }
+        manipulator.ifPresent(this::configureBindings);
 
+    }
+
+    private void configureBindings(Manipulator manipulator)
+    {
+        if (codriverGamepad == null)
+        {
+            return;
+        }
+        new JoystickButton(codriverGamepad, Button.kLeftBumper.value)
+            .onTrue(new InstantCommand(() -> manipulator.moveToClimbingPosition()));
+        new JoystickButton(codriverGamepad, Button.kBack.value)
+            .onTrue(new InstantCommand(() -> manipulator.moveToIntakePosition()));
+        new JoystickButton(codriverGamepad, Button.kStart.value)
+            .onTrue(new InstantCommand(() -> manipulator.climb()));
     }
 
     // Configures bindings for intaking and ejecting notes.
@@ -202,7 +217,6 @@ public class RobotContainer
         }
         new JoystickButton(codriverGamepad, Button.kA.value).whileTrue(new IntakeNote(intake, indexer, manipulator));
         new JoystickButton(codriverGamepad, Button.kB.value).whileTrue(new EjectNote(intake, indexer, manipulator));
-
     }
 
     // Configures bindings for shooting notes into speaker and amp.
@@ -212,9 +226,10 @@ public class RobotContainer
         {
             return;
         }
-        new JoystickButton(codriverGamepad, Button.kY.value).onTrue(new ShootNoteIntoSpeaker(indexer, shooter, manipulator));
-        new JoystickButton(codriverGamepad, Button.kX.value).onTrue(new ShootNoteIntoAmp(indexer, shooter, manipulator));
-
+        new JoystickButton(codriverGamepad, Button.kY.value)
+            .onTrue(new ShootNoteIntoSpeaker(indexer, shooter, manipulator));
+        new JoystickButton(codriverGamepad, Button.kX.value)
+            .onTrue(new ShootNoteIntoAmp(indexer, shooter, manipulator));
     }
 
     private void configureSmartDashboard()

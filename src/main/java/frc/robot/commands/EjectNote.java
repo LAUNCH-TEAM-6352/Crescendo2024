@@ -18,7 +18,7 @@ public class EjectNote extends Command
     private final Manipulator manipulator;
 
     /**
-     * TODO: Add parameters for manipulator
+     * 
      *
      * @param intake
      */
@@ -34,10 +34,9 @@ public class EjectNote extends Command
     @Override
     public void initialize()
     {
-        // TODO: Move manipulator to intake position
+        manipulator.moveToIntakePosition();
         intake.eject();
         indexer.eject();
-
     }
 
     @Override
@@ -52,8 +51,6 @@ public class EjectNote extends Command
     {
         indexer.stop();
         intake.stop();
-        // TODO: Move manipulator?
-
     }
 
     // Returns true when the command should end
