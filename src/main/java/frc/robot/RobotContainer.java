@@ -227,9 +227,9 @@ public class RobotContainer
             return;
         }
         new JoystickButton(codriverGamepad, Button.kY.value)
-            .onTrue(new ShootNoteIntoSpeaker(indexer, shooter, manipulator));
+            .whileTrue(new ShootNoteIntoSpeaker(indexer, shooter, manipulator));
         new JoystickButton(codriverGamepad, Button.kX.value)
-            .onTrue(new ShootNoteIntoAmp(indexer, shooter, manipulator));
+            .whileTrue(new ShootNoteIntoAmp(indexer, shooter, manipulator));
     }
 
     private void configureSmartDashboard()

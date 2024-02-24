@@ -21,6 +21,7 @@ public class Manipulator extends SubsystemBase
     /** Creates a new manipulator. */
     public Manipulator()
     {
+        climberSolenoid.set(Value.kOff);
     }
 
     public void moveToAmpPosition()
