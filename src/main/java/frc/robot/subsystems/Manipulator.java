@@ -49,6 +49,11 @@ public class Manipulator extends SubsystemBase
         climberSolenoid.set(Value.kForward);
     }
 
+    public void climbOff()
+    {
+        climberSolenoid.set(Value.kOff);
+    }
+
     @Override
     public void periodic()
     {

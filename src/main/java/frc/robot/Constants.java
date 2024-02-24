@@ -7,6 +7,7 @@ package frc.robot;
 import com.pathplanner.lib.util.PIDConstants;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -131,6 +132,7 @@ public final class Constants
     public static class DriveConstants
     {
         public static final boolean isFieldRelative = true;
+        public static final TelemetryVerbosity swerveDriveTelemetryVerbosity = TelemetryVerbosity.HIGH;   
     }
 
     public static final class PathPlannerConstants

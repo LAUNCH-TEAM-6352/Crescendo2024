@@ -25,8 +25,6 @@ import frc.robot.subsystems.Shooter;
 
 import java.util.Optional;
 
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -200,12 +198,14 @@ public class RobotContainer
         {
             return;
         }
-        new JoystickButton(codriverGamepad, Button.kLeftBumper.value)
-            .onTrue(new InstantCommand(() -> manipulator.moveToClimbingPosition()));
         new JoystickButton(codriverGamepad, Button.kBack.value)
             .onTrue(new InstantCommand(() -> manipulator.moveToIntakePosition()));
         new JoystickButton(codriverGamepad, Button.kStart.value)
+            .onTrue(new InstantCommand(() -> manipulator.moveToClimbingPosition()));
+        new JoystickButton(codriverGamepad, Button.kLeftBumper.value)
             .onTrue(new InstantCommand(() -> manipulator.climb()));
+        new JoystickButton(codriverGamepad, Button.kRightBumper.value)
+            .onTrue(new InstantCommand(() -> manipulator.climbOff()));
     }
 
     // Configures bindings for intaking and ejecting notes.
@@ -235,6 +235,7 @@ public class RobotContainer
     private void configureSmartDashboard()
     {
         driveTrain.ifPresent(this::configureSmartDashboard);
+        compressor.ifPresent(this::configureSmartDashboard);
         intake.ifPresent(this::configureSmartDashboard);
         indexer.ifPresent(this::configureSmartDashboard);
 
@@ -246,6 +247,11 @@ public class RobotContainer
     private void configureSmartDashboard(DriveTrain driveTrain)
     {
 
+    }
+
+    private void configureSmartDashboard(Compressor compressor)
+    {
+        SmartDashboard.putData(compressor);
     }
 
     private void configureSmartDashboard(Intake intake)
