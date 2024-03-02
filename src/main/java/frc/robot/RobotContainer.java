@@ -15,8 +15,10 @@ import frc.robot.Constants.IndexerConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.PneumaticsConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.DashboardConstants.IndexerKeys;
 import frc.robot.Constants.DashboardConstants.IntakeKeys;
+import frc.robot.Constants.DashboardConstants.ShooterKeys;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
@@ -198,13 +200,13 @@ public class RobotContainer
         {
             return;
         }
-        new JoystickButton(codriverGamepad, Button.kBack.value)
-            .onTrue(new InstantCommand(() -> manipulator.moveToIntakePosition()));
-        new JoystickButton(codriverGamepad, Button.kStart.value)
-            .onTrue(new InstantCommand(() -> manipulator.moveToClimbingPosition()));
         new JoystickButton(codriverGamepad, Button.kLeftBumper.value)
-            .onTrue(new InstantCommand(() -> manipulator.climb()));
+            .onTrue(new InstantCommand(() -> manipulator.moveToIntakePosition()));
         new JoystickButton(codriverGamepad, Button.kRightBumper.value)
+            .onTrue(new InstantCommand(() -> manipulator.moveToClimbingPosition()));
+        new JoystickButton(codriverGamepad, Button.kLeftStick.value)
+            .onTrue(new InstantCommand(() -> manipulator.climb()));
+        new JoystickButton(codriverGamepad, Button.kRightStick.value)
             .onTrue(new InstantCommand(() -> manipulator.climbOff()));
     }
 
@@ -238,6 +240,7 @@ public class RobotContainer
         compressor.ifPresent(this::configureSmartDashboard);
         intake.ifPresent(this::configureSmartDashboard);
         indexer.ifPresent(this::configureSmartDashboard);
+        shooter.ifPresent(this::configureSmartDashboard);
 
         // Configure chooser widgets:
         configureDriveOrientationChooser(driveOrientationChooser);
@@ -265,9 +268,16 @@ public class RobotContainer
     private void configureSmartDashboard(Indexer indexer)
     {
         SmartDashboard.putNumber(IndexerKeys.lowerRollerIntakeRpm, IndexerConstants.lowerRollerMotorIntakeRpm);
+        SmartDashboard.putNumber(IndexerKeys.upperRollerIntakeRpm, IndexerConstants.upperRollerMotorIntakeRpm);
         SmartDashboard.putNumber(IndexerKeys.lowerRollerEjectRpm, IndexerConstants.lowerRollerMotorEjectRpm);
         SmartDashboard.putNumber(IndexerKeys.lowerRollerFeedRpm, IndexerConstants.lowerRollerMotorFeedRpm);
         SmartDashboard.putNumber(IndexerKeys.upperRollerFeedRpm, IndexerConstants.upperRollerMotorFeedRpm);
+    }
+    
+    private void configureSmartDashboard(Shooter shooter)
+    {
+        SmartDashboard.putNumber(ShooterKeys.ampRpm, ShooterConstants.ampRpm);
+        SmartDashboard.putNumber(ShooterKeys.speakerRpm, ShooterConstants.speakerRpm);
     }
 
     private void configureDriveOrientationChooser(SendableChooser<Boolean> driveOrientationChooser)

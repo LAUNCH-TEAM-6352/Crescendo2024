@@ -35,20 +35,33 @@ public final class Constants
         public static final int upperRollerMotorChannel = 44;
 
         // TODO: Add correct RPM values and motor inversion values
-        public static final double lowerRollerMotorIntakeRpm = 0;
-        public static final double lowerRollerMotorEjectRpm = -0;
-        public static final double lowerRollerMotorFeedRpm = 0;
-        public static final double upperRollerMotorFeedRpm = 0;
+        public static final double lowerRollerMotorIntakeRpm = 2100;
+        public static final double upperRollerMotorIntakeRpm = 2100;
+        public static final double lowerRollerMotorEjectRpm = -2100;
+        public static final double lowerRollerMotorFeedRpm = 2100;
+        public static final double upperRollerMotorFeedRpm = 2100;
+        
         public static final boolean isLowerRollerMotorInverted = false;
-        public static final boolean isUpperRollerMotorInverted = false;
+        public static final boolean isUpperRollerMotorInverted = true;
 
-        public static final class PIDConstants
+        public static final class LowerPIDConstants
         {
-            public static final double kP = 6e-5;
-            public static final double kI = 0.0;
+            public static final double kP = 0.000024;
+            public static final double kI = 3.0e-7;
             public static final double kD = 0.0;
             public static final int kIZ = 0;
-            public static final double kFF = 0.00005;
+            public static final double kFF = 0.0;
+            public static final double defaultMinOutput = -1;
+            public static final double defaultMaxOutput = 1;
+        }
+
+        public static final class UpperPIDConstants
+        {
+            public static final double kP = 0.00004;
+            public static final double kI = 0.0000035;
+            public static final double kD = 3.0;
+            public static final int kIZ = 0;
+            public static final double kFF = 0.0001;
             public static final double defaultMinOutput = -1;
             public static final double defaultMaxOutput = 1;
         }
@@ -59,18 +72,18 @@ public final class Constants
     {
         public static final int leftMotorChannel = 45;
         public static final int rightMotorChannel = 46;
-        public static final double ampRpm = 0.0;
-        public static final double speakerRpm = 0.0;
-        public static final boolean isLeftMotorInverted = false;
+        public static final double ampRpm = 1000.0;
+        public static final double speakerRpm = 4000.0;
+        public static final boolean isLeftMotorInverted = true;
         public static final boolean isRightMotorInverted = false;
 
         public static final class PIDConstants
         {
-            public static final double kP = 6e-5;
-            public static final double kI = 0.0;
+            public static final double kP = 0.000024;
+            public static final double kI = 3.0e-7;
             public static final double kD = 0.0;
             public static final int kIZ = 0;
-            public static final double kFF = 0.00005;
+            public static final double kFF = 0.0;
             public static final double defaultMinOutput = -1;
             public static final double defaultMaxOutput = 1;
         }
@@ -93,13 +106,15 @@ public final class Constants
         public static final double smallRollerMotorIntakeRpm = 2100;
         public static final double largeRollerMotorEjectRpm = -2600;
         public static final double smallRollerMotorEjectRpm = -2100;
-        public static final boolean isLargeRollerMotorInverted = false;
-        public static final boolean isSmallRollerMotorInverted = false;
+        public static final boolean isLargeRollerMotorInverted = true;
+        public static final boolean isSmallRollerMotorInverted = true;
+
+        public static final int opticalSensorPort = 0;
 
         public static final class PIDConstants
         {
-            public static final double kP = 6e-5;
-            public static final double kI = 0.0;
+            public static final double kP = 0.000024;
+            public static final double kI = 3.0e-7;
             public static final double kD = 0.0;
             public static final int kIZ = 0;
             public static final double kFF = 0.00005;
@@ -152,24 +167,25 @@ public final class Constants
     {
         public static final class IntakeKeys
         {
-            public static final String largeRollerIntakeRpm = "Large Roller Intake RPM";
-            public static final String largeRollerEjectRpm = "Large Roller Eject RPM";
-            public static final String smallRollerIntakeRpm = "Small Roller Intake RPM";
-            public static final String smallRollerEjectRpm = "Small Roller Eject RPM";
+            public static final String largeRollerIntakeRpm = "Lg Rlr In RPM";
+            public static final String largeRollerEjectRpm = "Lg Rlr Ej RPM";
+            public static final String smallRollerIntakeRpm = "Sm Rlr In RPM";
+            public static final String smallRollerEjectRpm = "Sm Rlr Ej RPM";
         }
 
         public static final class IndexerKeys
         {
-            public static final String lowerRollerIntakeRpm = "Lower Roller Intake RPM";
-            public static final String lowerRollerEjectRpm = "Lower Roller Eject RPM";
-            public static final String lowerRollerFeedRpm = "Lower Roller Feed RPM";
-            public static final String upperRollerFeedRpm = "Upper Roller Feed RPM";
+            public static final String lowerRollerIntakeRpm = "Lw Rlr In RPM";
+            public static final String upperRollerIntakeRpm = "Up Rlr In RPM";
+            public static final String lowerRollerEjectRpm = "Lw Rlr Ej RPM";
+            public static final String lowerRollerFeedRpm = "Lw Rlr Fd RPM";
+            public static final String upperRollerFeedRpm = "Up Rlr Fd RPM";
         }
 
         public static final class ShooterKeys
         {
             public static final String ampRpm = "Amp RPM";
-            public static final String speakerRpm = "Speaker RPM";
+            public static final String speakerRpm = "Spkr RPM";
 
         }
     }

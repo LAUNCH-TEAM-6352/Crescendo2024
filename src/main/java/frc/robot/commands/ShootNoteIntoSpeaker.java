@@ -71,7 +71,6 @@ public class ShootNoteIntoSpeaker extends Command
     @Override
     public boolean isFinished()
     {
-        // TODO: Return true if note has been shot
         return false;
     }
 }

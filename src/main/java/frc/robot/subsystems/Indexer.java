@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IndexerConstants;
 import frc.robot.Constants.DashboardConstants.IndexerKeys;
-import frc.robot.Constants.IndexerConstants.PIDConstants;
+import frc.robot.Constants.IndexerConstants.UpperPIDConstants;
+import frc.robot.Constants.IndexerConstants.LowerPIDConstants;
+
 
 public class Indexer extends SubsystemBase
 {
@@ -29,13 +31,22 @@ public class Indexer extends SubsystemBase
         {
             motor.restoreFactoryDefaults();
             motor.clearFaults();
-            var pidController = motor.getPIDController();
-            pidController.setP(PIDConstants.kP);
-            pidController.setI(PIDConstants.kI);
-            pidController.setD(PIDConstants.kD);
-            pidController.setIZone(PIDConstants.kIZ);
-            pidController.setFF(PIDConstants.kFF);
         }
+        
+        var pidController = lowerRollerMotor.getPIDController();
+        pidController.setP(LowerPIDConstants.kP);
+        pidController.setI(LowerPIDConstants.kI);
+        pidController.setD(LowerPIDConstants.kD);
+        pidController.setIZone(LowerPIDConstants.kIZ);
+        pidController.setFF(LowerPIDConstants.kFF);
+
+        pidController = upperRollerMotor.getPIDController();
+        pidController.setP(UpperPIDConstants.kP);
+        pidController.setI(UpperPIDConstants.kI);
+        pidController.setD(UpperPIDConstants.kD);
+        pidController.setIZone(UpperPIDConstants.kIZ);
+        pidController.setFF(UpperPIDConstants.kFF);
+
         // Apply configuration unique to large and small roller motors:
         lowerRollerMotor.setInverted(IndexerConstants.isLowerRollerMotorInverted);
         upperRollerMotor.setInverted(IndexerConstants.isUpperRollerMotorInverted);
