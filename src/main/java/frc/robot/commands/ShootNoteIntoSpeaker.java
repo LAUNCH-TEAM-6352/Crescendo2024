@@ -42,9 +42,9 @@ public class ShootNoteIntoSpeaker extends Command
     @Override
     public void initialize()
     {
-        hasShooterBeenFed = false;
-        shooter.setSpeakerSpeed();
         manipulator.moveToSpeakerPosition();
+        shooter.setSpeakerSpeed();
+        hasShooterBeenFed = false;
     }
 
     // Called every time the scheduler runs while the command is scheduled.

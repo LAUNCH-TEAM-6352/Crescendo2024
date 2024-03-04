@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.util.PIDConstants;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
@@ -29,20 +30,32 @@ public final class Constants
         public static final double gamepadDeadband = 0.05;
     }
 
+    public static final class CameraConstants
+    {
+        public static final int fps = 10;
+        public static final int width = 320;
+        public static final int height = 240;
+    }
+
     public static final class IndexerConstants
     {
         public static final int lowerRollerMotorChannel = 43;
         public static final int upperRollerMotorChannel = 44;
 
-        // TODO: Add correct RPM values and motor inversion values
+        // TODO: Tune RPM values
         public static final double lowerRollerMotorIntakeRpm = 2100;
         public static final double upperRollerMotorIntakeRpm = 2100;
+
         public static final double lowerRollerMotorEjectRpm = -2100;
+        public static final double upperRollerMotorEjectRpm = -2100;
+
         public static final double lowerRollerMotorFeedRpm = 2100;
         public static final double upperRollerMotorFeedRpm = 2100;
         
         public static final boolean isLowerRollerMotorInverted = false;
         public static final boolean isUpperRollerMotorInverted = true;
+
+        public static final IdleMode motorIdleMode = IdleMode.kBrake;
 
         public static final class LowerPIDConstants
         {
@@ -51,8 +64,8 @@ public final class Constants
             public static final double kD = 0.0;
             public static final int kIZ = 0;
             public static final double kFF = 0.0;
-            public static final double defaultMinOutput = -1;
-            public static final double defaultMaxOutput = 1;
+            public static final double minOutput = -1;
+            public static final double maxOutput = 1;
         }
 
         public static final class UpperPIDConstants
@@ -62,20 +75,29 @@ public final class Constants
             public static final double kD = 3.0;
             public static final int kIZ = 0;
             public static final double kFF = 0.0001;
-            public static final double defaultMinOutput = -1;
-            public static final double defaultMaxOutput = 1;
+            public static final double minOutput = -1;
+            public static final double maxOutput = 1;
         }
     }
 
-    // TODO: Add correct RPM values and motor inversion values
-    public static final class ShooterConstants
+    public static final class IntakeConstants
     {
-        public static final int leftMotorChannel = 45;
-        public static final int rightMotorChannel = 46;
-        public static final double ampRpm = 1000.0;
-        public static final double speakerRpm = 4000.0;
-        public static final boolean isLeftMotorInverted = true;
-        public static final boolean isRightMotorInverted = false;
+        public static final int largeRollerMotorChannel = 41;
+        public static final int smallRollerMotorChannel = 42;
+
+        public static final int opticalSensorPort = 0;
+
+         // TODO: Tune motor RPM values
+        public static final double largeRollerMotorIntakeRpm = 2600;
+        public static final double smallRollerMotorIntakeRpm = 2100;
+
+        public static final double largeRollerMotorEjectRpm = -2600;
+        public static final double smallRollerMotorEjectRpm = -2100;
+
+        public static final boolean isLargeRollerMotorInverted = true;
+        public static final boolean isSmallRollerMotorInverted = true;
+
+        public static final IdleMode motorIdleMode = IdleMode.kBrake;
 
         public static final class PIDConstants
         {
@@ -83,11 +105,10 @@ public final class Constants
             public static final double kI = 3.0e-7;
             public static final double kD = 0.0;
             public static final int kIZ = 0;
-            public static final double kFF = 0.0;
-            public static final double defaultMinOutput = -1;
-            public static final double defaultMaxOutput = 1;
+            public static final double kFF = 0.00005;
+            public static final double minOutput = -1;
+            public static final double maxOutput = 1;
         }
-
     }
 
     public static final class ManipulatorConstants
@@ -98,18 +119,22 @@ public final class Constants
         public static final int noteSolenoidReverseChannel = 1;
     }
 
-    public static final class IntakeConstants
+    public static final class ShooterConstants
     {
-        public static final int largeRollerMotorChannel = 41;
-        public static final int smallRollerMotorChannel = 42;
-        public static final double largeRollerMotorIntakeRpm = 2600;
-        public static final double smallRollerMotorIntakeRpm = 2100;
-        public static final double largeRollerMotorEjectRpm = -2600;
-        public static final double smallRollerMotorEjectRpm = -2100;
-        public static final boolean isLargeRollerMotorInverted = true;
-        public static final boolean isSmallRollerMotorInverted = true;
+        public static final int leftMotorChannel = 45;
+        public static final int rightMotorChannel = 46;
 
-        public static final int opticalSensorPort = 0;
+        // TODO: Tune motor RPM values
+        public static final double ampRpm = 1000.0;
+        public static final double speakerRpm = 4000.0;
+
+        // Tolerance for determining if motors are at the desired velocity:
+        public static final double rpmTolerance = 10;
+
+        public static final boolean isLeftMotorInverted = true;
+        public static final boolean isRightMotorInverted = false;
+
+        public static final IdleMode motorIdleMode = IdleMode.kCoast;
 
         public static final class PIDConstants
         {
@@ -117,9 +142,9 @@ public final class Constants
             public static final double kI = 3.0e-7;
             public static final double kD = 0.0;
             public static final int kIZ = 0;
-            public static final double kFF = 0.00005;
-            public static final double defaultMinOutput = -1;
-            public static final double defaultMaxOutput = 1;
+            public static final double kFF = 0.0;
+            public static final double minOutput = -1;
+            public static final double maxOutput = 1;
         }
     }
 
@@ -140,6 +165,7 @@ public final class Constants
 
         public static final double gearRatioDriveMk4 = 8.14;
         public static final double gearRatioDriveMk4i = 8.14;
+
         public static final double gearRatioSteerMk4 = 12.8;
         public static final double gearRatioSteerMk4i = 21.43;
     }
@@ -156,37 +182,37 @@ public final class Constants
         public static final PIDConstants ANGLE_PID = new PIDConstants(0.4, 0, 0.01);
     }
 
-    public static final class CameraConstants
-    {
-        public static final int fps = 10;
-        public static final int width = 320;
-        public static final int height = 240;
-    }
-
     public static final class DashboardConstants
     {
-        public static final class IntakeKeys
-        {
-            public static final String largeRollerIntakeRpm = "Lg Rlr In RPM";
-            public static final String largeRollerEjectRpm = "Lg Rlr Ej RPM";
-            public static final String smallRollerIntakeRpm = "Sm Rlr In RPM";
-            public static final String smallRollerEjectRpm = "Sm Rlr Ej RPM";
-        }
-
         public static final class IndexerKeys
         {
-            public static final String lowerRollerIntakeRpm = "Lw Rlr In RPM";
-            public static final String upperRollerIntakeRpm = "Up Rlr In RPM";
-            public static final String lowerRollerEjectRpm = "Lw Rlr Ej RPM";
-            public static final String lowerRollerFeedRpm = "Lw Rlr Fd RPM";
-            public static final String upperRollerFeedRpm = "Up Rlr Fd RPM";
+            public static final String lowerRollerIntakeRpm = "Idx Lw In RPM";
+            public static final String upperRollerIntakeRpm = "Idx Up In RPM";
+
+            public static final String lowerRollerEjectRpm = "Idx Lw Ej RPM";
+            public static final String upperRollerEjectRpm = "Idx Up Ej RPM";
+
+            public static final String lowerRollerFeedRpm = "Idx Lw Fd RPM";
+            public static final String upperRollerFeedRpm = "Idx Up Fd RPM";
+        }
+
+        public static final class IntakeKeys
+        {
+            public static final String largeRollerIntakeRpm = "Itk Lg In RPM";
+            public static final String smallRollerIntakeRpm = "Itk Sm In RPM";
+
+            public static final String largeRollerEjectRpm = "Itk Lg Ej RPM";
+            public static final String smallRollerEjectRpm = "Itk Sm Ej RPM";
+
+            public static final String hasNote = "Has Note";
         }
 
         public static final class ShooterKeys
         {
-            public static final String ampRpm = "Amp RPM";
-            public static final String speakerRpm = "Spkr RPM";
+            public static final String ampRpm = "Shoot Amp RPM";
+            public static final String speakerRpm = "Shoot Spk RPM";
 
+            public static final String rpmTolerance = "Shoot RPM Tol";
         }
     }
 }

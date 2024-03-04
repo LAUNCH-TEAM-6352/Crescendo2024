@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.EncoderType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,31 +15,32 @@ import frc.robot.Constants.DashboardConstants.IndexerKeys;
 import frc.robot.Constants.IndexerConstants.UpperPIDConstants;
 import frc.robot.Constants.IndexerConstants.LowerPIDConstants;
 
-
 public class Indexer extends SubsystemBase
 {
     private final CANSparkMax lowerRollerMotor = new CANSparkMax(IndexerConstants.lowerRollerMotorChannel,
-                    MotorType.kBrushless);
+        MotorType.kBrushless);
+
     private final CANSparkMax upperRollerMotor = new CANSparkMax(IndexerConstants.upperRollerMotorChannel,
-                    MotorType.kBrushless);
+        MotorType.kBrushless);
 
     /** Creates a new Indexer. */
     public Indexer()
     {
         // Apply configuration common to both large and small roller motors:
-        for (CANSparkMax motor : new CANSparkMax[]
-        { lowerRollerMotor, upperRollerMotor })
+        for (CANSparkMax motor : new CANSparkMax[] { lowerRollerMotor, upperRollerMotor })
         {
             motor.restoreFactoryDefaults();
             motor.clearFaults();
+            motor.setIdleMode(IndexerConstants.motorIdleMode);
         }
-        
+
         var pidController = lowerRollerMotor.getPIDController();
         pidController.setP(LowerPIDConstants.kP);
         pidController.setI(LowerPIDConstants.kI);
         pidController.setD(LowerPIDConstants.kD);
         pidController.setIZone(LowerPIDConstants.kIZ);
         pidController.setFF(LowerPIDConstants.kFF);
+        pidController.setOutputRange(LowerPIDConstants.minOutput, LowerPIDConstants.maxOutput);
 
         pidController = upperRollerMotor.getPIDController();
         pidController.setP(UpperPIDConstants.kP);
@@ -46,6 +48,7 @@ public class Indexer extends SubsystemBase
         pidController.setD(UpperPIDConstants.kD);
         pidController.setIZone(UpperPIDConstants.kIZ);
         pidController.setFF(UpperPIDConstants.kFF);
+        pidController.setOutputRange(UpperPIDConstants.minOutput, UpperPIDConstants.maxOutput);
 
         // Apply configuration unique to large and small roller motors:
         lowerRollerMotor.setInverted(IndexerConstants.isLowerRollerMotorInverted);
@@ -55,29 +58,39 @@ public class Indexer extends SubsystemBase
     public void intake()
     {
         lowerRollerMotor.getPIDController()
-                        .setReference(SmartDashboard.getNumber(IndexerKeys.lowerRollerIntakeRpm,
-                                        IndexerConstants.lowerRollerMotorIntakeRpm),
-                                        CANSparkBase.ControlType.kVelocity);
+            .setReference(SmartDashboard.getNumber(IndexerKeys.lowerRollerIntakeRpm,
+                IndexerConstants.lowerRollerMotorIntakeRpm),
+                CANSparkBase.ControlType.kVelocity);
+
+        upperRollerMotor.getPIDController()
+            .setReference(SmartDashboard.getNumber(IndexerKeys.upperRollerIntakeRpm,
+                IndexerConstants.upperRollerMotorIntakeRpm),
+                CANSparkBase.ControlType.kVelocity);
     }
 
     public void eject()
     {
         lowerRollerMotor.getPIDController()
-                        .setReference(SmartDashboard.getNumber(IndexerKeys.lowerRollerEjectRpm,
-                                        IndexerConstants.lowerRollerMotorEjectRpm),
-                                        CANSparkBase.ControlType.kVelocity);
+            .setReference(SmartDashboard.getNumber(IndexerKeys.lowerRollerEjectRpm,
+                IndexerConstants.lowerRollerMotorEjectRpm),
+                CANSparkBase.ControlType.kVelocity);
+
+        upperRollerMotor.getPIDController()
+            .setReference(SmartDashboard.getNumber(IndexerKeys.upperRollerEjectRpm,
+                IndexerConstants.upperRollerMotorEjectRpm),
+                CANSparkBase.ControlType.kVelocity);
     }
 
     public void feed()
     {
         lowerRollerMotor.getPIDController()
-                        .setReference(SmartDashboard.getNumber(IndexerKeys.lowerRollerFeedRpm,
-                                        IndexerConstants.lowerRollerMotorFeedRpm),
-                                        CANSparkBase.ControlType.kVelocity);
+            .setReference(SmartDashboard.getNumber(IndexerKeys.lowerRollerFeedRpm,
+                IndexerConstants.lowerRollerMotorFeedRpm),
+                CANSparkBase.ControlType.kVelocity);
         upperRollerMotor.getPIDController()
-                        .setReference(SmartDashboard.getNumber(IndexerKeys.upperRollerFeedRpm,
-                                        IndexerConstants.upperRollerMotorFeedRpm),
-                                        CANSparkBase.ControlType.kVelocity);
+            .setReference(SmartDashboard.getNumber(IndexerKeys.upperRollerFeedRpm,
+                IndexerConstants.upperRollerMotorFeedRpm),
+                CANSparkBase.ControlType.kVelocity);
     }
 
     public void stop()
@@ -90,5 +103,7 @@ public class Indexer extends SubsystemBase
     public void periodic()
     {
         // This method will be called once per scheduler run
+        SmartDashboard.putNumber("Indexer/Lower/RPM", lowerRollerMotor.getEncoder().getVelocity());
+        SmartDashboard.putNumber("Indexer/Upper/RPM", upperRollerMotor.getEncoder().getVelocity());
     }
 }

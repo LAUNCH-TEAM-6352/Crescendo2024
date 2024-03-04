@@ -41,9 +41,9 @@ public class ShootNoteIntoAmp extends Command
     @Override
     public void initialize()
     {
+        manipulator.moveToAmpPosition();
         shooter.setAmpSpeed();
         hasShooterBeenFed = false;
-        manipulator.moveToAmpPosition();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -52,8 +52,8 @@ public class ShootNoteIntoAmp extends Command
     {
         if (shooter.isAtTargetVelocity() && !hasShooterBeenFed)
         {
-            hasShooterBeenFed = true;
             indexer.feed();
+            hasShooterBeenFed = true;
         }
     }
 

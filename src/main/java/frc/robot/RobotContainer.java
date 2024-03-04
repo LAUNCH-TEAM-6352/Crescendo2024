@@ -186,50 +186,68 @@ public class RobotContainer
         {
             configureBindings(intake.get(), indexer.get(), manipulator.get());
         }
+
         if (indexer.isPresent() && shooter.isPresent() && manipulator.isPresent())
         {
             configureBindings(indexer.get(), shooter.get(), manipulator.get());
         }
-        manipulator.ifPresent(this::configureBindings);
 
+        manipulator.ifPresent(this::configureBindings);
     }
 
+    /**
+     * Configure bindings that only involve the manipulator.
+     */
     private void configureBindings(Manipulator manipulator)
     {
         if (codriverGamepad == null)
         {
             return;
         }
+
         new JoystickButton(codriverGamepad, Button.kLeftBumper.value)
             .onTrue(new InstantCommand(() -> manipulator.moveToIntakePosition()));
+
         new JoystickButton(codriverGamepad, Button.kRightBumper.value)
             .onTrue(new InstantCommand(() -> manipulator.moveToClimbingPosition()));
+
         new JoystickButton(codriverGamepad, Button.kLeftStick.value)
             .onTrue(new InstantCommand(() -> manipulator.climb()));
+
         new JoystickButton(codriverGamepad, Button.kRightStick.value)
             .onTrue(new InstantCommand(() -> manipulator.climbOff()));
     }
 
-    // Configures bindings for intaking and ejecting notes.
+    /**
+     * Configures bindings for intaking and ejecting notes.
+     */
     private void configureBindings(Intake intake, Indexer indexer, Manipulator manipulator)
     {
         if (codriverGamepad == null)
         {
             return;
         }
-        new JoystickButton(codriverGamepad, Button.kA.value).whileTrue(new IntakeNote(intake, indexer, manipulator));
-        new JoystickButton(codriverGamepad, Button.kB.value).whileTrue(new EjectNote(intake, indexer, manipulator));
+
+        new JoystickButton(codriverGamepad, Button.kA.value)
+            .whileTrue(new IntakeNote(intake, indexer, manipulator));
+
+        new JoystickButton(codriverGamepad, Button.kB.value)
+            .whileTrue(new EjectNote(intake, indexer, manipulator));
     }
 
-    // Configures bindings for shooting notes into speaker and amp.
+    /**
+     * Configures bindings for shooting notes into speaker and amp.
+     */
     private void configureBindings(Indexer indexer, Shooter shooter, Manipulator manipulator)
     {
         if (codriverGamepad == null)
         {
             return;
         }
+
         new JoystickButton(codriverGamepad, Button.kY.value)
             .whileTrue(new ShootNoteIntoSpeaker(indexer, shooter, manipulator));
+
         new JoystickButton(codriverGamepad, Button.kX.value)
             .whileTrue(new ShootNoteIntoAmp(indexer, shooter, manipulator));
     }
@@ -260,8 +278,9 @@ public class RobotContainer
     private void configureSmartDashboard(Intake intake)
     {
         SmartDashboard.putNumber(IntakeKeys.largeRollerIntakeRpm, IntakeConstants.largeRollerMotorIntakeRpm);
-        SmartDashboard.putNumber(IntakeKeys.largeRollerEjectRpm, IntakeConstants.largeRollerMotorEjectRpm);
         SmartDashboard.putNumber(IntakeKeys.smallRollerIntakeRpm, IntakeConstants.smallRollerMotorIntakeRpm);
+
+        SmartDashboard.putNumber(IntakeKeys.largeRollerEjectRpm, IntakeConstants.largeRollerMotorEjectRpm);
         SmartDashboard.putNumber(IntakeKeys.smallRollerEjectRpm, IntakeConstants.smallRollerMotorEjectRpm);
     }
 
@@ -269,15 +288,20 @@ public class RobotContainer
     {
         SmartDashboard.putNumber(IndexerKeys.lowerRollerIntakeRpm, IndexerConstants.lowerRollerMotorIntakeRpm);
         SmartDashboard.putNumber(IndexerKeys.upperRollerIntakeRpm, IndexerConstants.upperRollerMotorIntakeRpm);
+
         SmartDashboard.putNumber(IndexerKeys.lowerRollerEjectRpm, IndexerConstants.lowerRollerMotorEjectRpm);
+        SmartDashboard.putNumber(IndexerKeys.upperRollerEjectRpm, IndexerConstants.upperRollerMotorEjectRpm);
+
         SmartDashboard.putNumber(IndexerKeys.lowerRollerFeedRpm, IndexerConstants.lowerRollerMotorFeedRpm);
         SmartDashboard.putNumber(IndexerKeys.upperRollerFeedRpm, IndexerConstants.upperRollerMotorFeedRpm);
     }
-    
+
     private void configureSmartDashboard(Shooter shooter)
     {
         SmartDashboard.putNumber(ShooterKeys.ampRpm, ShooterConstants.ampRpm);
         SmartDashboard.putNumber(ShooterKeys.speakerRpm, ShooterConstants.speakerRpm);
+
+        SmartDashboard.putNumber(ShooterKeys.rpmTolerance, ShooterConstants.rpmTolerance);
     }
 
     private void configureDriveOrientationChooser(SendableChooser<Boolean> driveOrientationChooser)
