@@ -17,61 +17,82 @@ import frc.robot.Constants.ShooterConstants.PIDConstants;
 public class Shooter extends SubsystemBase
 {
     private final CANSparkMax leftMotor = new CANSparkMax(ShooterConstants.leftMotorChannel,
-                    MotorType.kBrushless);
+        MotorType.kBrushless);
+
     private final CANSparkMax rightMotor = new CANSparkMax(ShooterConstants.rightMotorChannel,
-                    MotorType.kBrushless);
+        MotorType.kBrushless);
+
+    private final CANSparkMax[] motors = new CANSparkMax[] { leftMotor, rightMotor };
 
     private boolean isSpinningUp = false;
     private boolean isAtTargetVelocity = false;
-    private double lastVelocity;
+
     private double targetVelocity;
+
+    private double lastLeftVelocity;
+    private double lastRightVelocity;
+
+    private double velocityTolerance;
 
     /** Creates a new Shooter. */
     public Shooter()
     {
         // Apply configuration common to both large and small roller motors:
-        for (CANSparkMax motor : new CANSparkMax[]
-        { leftMotor, rightMotor })
+        for (CANSparkMax motor : motors)
         {
             motor.restoreFactoryDefaults();
             motor.clearFaults();
+            motor.setIdleMode(ShooterConstants.motorIdleMode);
+
+            var pidController = motor.getPIDController();
+            pidController.setP(PIDConstants.kP);
+            pidController.setI(PIDConstants.kI);
+            pidController.setD(PIDConstants.kD);
+            pidController.setIZone(PIDConstants.kIZ);
+            pidController.setFF(PIDConstants.kFF);
+            pidController.setOutputRange(PIDConstants.minOutput, PIDConstants.maxOutput);
         }
+
         leftMotor.setInverted(ShooterConstants.isLeftMotorInverted);
-
-        var pidController = leftMotor.getPIDController();
-        pidController.setP(PIDConstants.kP);
-        pidController.setI(PIDConstants.kI);
-        pidController.setD(PIDConstants.kD);
-        pidController.setIZone(PIDConstants.kIZ);
-        pidController.setFF(PIDConstants.kFF);
-
-        rightMotor.follow(leftMotor, ShooterConstants.isLeftMotorInverted != ShooterConstants.isRightMotorInverted);
+        rightMotor.setInverted(ShooterConstants.isRightMotorInverted);
     }
 
     public void setAmpSpeed()
     {
-        targetVelocity = SmartDashboard.getNumber(ShooterKeys.ampRpm, ShooterConstants.ampRpm);
-        lastVelocity = 0;
-        leftMotor.getPIDController()
-                        .setReference(targetVelocity, CANSparkBase.ControlType.kVelocity);
-        isSpinningUp = true;
-        isAtTargetVelocity = false;
+        setVelocity(SmartDashboard.getNumber(ShooterKeys.ampRpm, ShooterConstants.ampRpm));
     }
 
     public void setSpeakerSpeed()
     {
-        targetVelocity = SmartDashboard.getNumber(ShooterKeys.speakerRpm, ShooterConstants.speakerRpm);
-        lastVelocity = 0;
-        leftMotor.getPIDController()
-                        .setReference(targetVelocity, CANSparkBase.ControlType.kVelocity);
+        setVelocity(SmartDashboard.getNumber(ShooterKeys.speakerRpm, ShooterConstants.speakerRpm));
+    }
+
+    /**
+     * Sets both motors to run at the specified velocity (in RPM).
+     */
+    private void setVelocity(double velocity)
+    {
+        targetVelocity = velocity;
+        velocityTolerance = SmartDashboard.getNumber(ShooterKeys.rpmTolerance, ShooterConstants.rpmTolerance);
+
+        lastLeftVelocity = 0;
+        lastRightVelocity = 0;
+
+        for (CANSparkMax motor : motors)
+        {
+            motor.getPIDController().setReference(targetVelocity, CANSparkBase.ControlType.kVelocity);
+        }
+
         isSpinningUp = true;
         isAtTargetVelocity = false;
     }
 
     public void stop()
     {
-        leftMotor.stopMotor();
-        rightMotor.stopMotor();
+        for (CANSparkMax motor : motors)
+        {
+            motor.stopMotor();
+        }
     }
 
     public boolean isAtTargetVelocity()
@@ -83,18 +104,26 @@ public class Shooter extends SubsystemBase
     public void periodic()
     {
         // This method will be called once per scheduler run
-        
+        double leftVelocity = leftMotor.getEncoder().getVelocity();
+        double rightVelocity = rightMotor.getEncoder().getVelocity();
+        SmartDashboard.putNumber("Shooter/Left/RPM", leftVelocity);
+        SmartDashboard.putNumber("Shooter/Right/RPM", rightVelocity);
+
+        // Determine if both shooter motors have come up to speed and stabalized:
         if (isSpinningUp)
         {
-            double leftVelocity = leftMotor.getEncoder().getVelocity();
-            if (Math.abs(leftVelocity - targetVelocity) < 10 && Math.abs(leftVelocity - lastVelocity) < 10)
+            if (Math.abs(leftVelocity - targetVelocity) < velocityTolerance &&
+                Math.abs(leftVelocity - lastLeftVelocity) < velocityTolerance &&
+                Math.abs(rightVelocity - targetVelocity) < velocityTolerance &&
+                Math.abs(rightVelocity - lastRightVelocity) < velocityTolerance)
             {
                 isSpinningUp = false;
                 isAtTargetVelocity = true;
             }
             else
             {
-                lastVelocity = leftVelocity;
+                lastLeftVelocity = leftVelocity;
+                lastRightVelocity = rightVelocity;
             }
         }
     }

@@ -57,6 +57,6 @@ public class IntakeNote extends Command
     @Override
     public boolean isFinished()
     {
-        return false;
+        return intake.hasNote();
     }
 }

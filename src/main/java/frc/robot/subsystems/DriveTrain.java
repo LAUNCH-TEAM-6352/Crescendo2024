@@ -15,13 +15,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PathPlannerConstants;
 import frc.robot.Constants.SwerveConstants;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
-import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import swervelib.math.SwerveMath;
 
 public class DriveTrain extends SubsystemBase
@@ -33,7 +32,7 @@ public class DriveTrain extends SubsystemBase
         // Swerve drive initiation according to YAGSL
         try
         {
-            SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+            SwerveDriveTelemetry.verbosity = DriveConstants.swerveDriveTelemetryVerbosity;
             File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
             double driveConversionFactor = SwerveMath.calculateMetersPerRotation(
                             Units.inchesToMeters(SwerveConstants.wheelDiameter), SwerveConstants.gearRatioDriveMk4);
