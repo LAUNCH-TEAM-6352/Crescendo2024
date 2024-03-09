@@ -214,8 +214,17 @@ public class RobotContainer
         new JoystickButton(codriverGamepad, Button.kLeftStick.value)
             .onTrue(new InstantCommand(() -> manipulator.climb()));
 
-        new JoystickButton(codriverGamepad, Button.kRightStick.value)
+        new JoystickButton(codriverGamepad, Button.kBack.value)
             .onTrue(new InstantCommand(() -> manipulator.climbOff()));
+
+        new JoystickButton(codriverGamepad, Button.kRightStick.value)
+            .onTrue(new InstantCommand(() -> manipulator.climbLock()));
+
+        new JoystickButton(codriverGamepad, Button.kStart.value)
+            .onTrue(new InstantCommand(() -> manipulator.climbUnlock()));
+
+        // new JoystickButton(codriverGamepad, Button.kStart.value)
+        //     .onTrue(new InstantCommand(() -> manipulator.climbLockOff()));
     }
 
     /**

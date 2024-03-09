@@ -13,23 +13,28 @@ import frc.robot.Constants.PneumaticsConstants;
 public class Manipulator extends SubsystemBase
 {
     private final DoubleSolenoid noteSolenoid = new DoubleSolenoid(PneumaticsConstants.moduleType,
-                    ManipulatorConstants.noteSolenoidForwardChannel, ManipulatorConstants.noteSolenoidReverseChannel);
+        ManipulatorConstants.noteSolenoidForwardChannel, ManipulatorConstants.noteSolenoidReverseChannel);
 
     private final DoubleSolenoid climberSolenoid = new DoubleSolenoid(PneumaticsConstants.moduleType,
-                    ManipulatorConstants.climbingSolenoidForwardChannel,
-                    ManipulatorConstants.climbingSolenoidReverseChannel);
+        ManipulatorConstants.climbingSolenoidForwardChannel,
+        ManipulatorConstants.climbingSolenoidReverseChannel);
+
+    private final DoubleSolenoid climberLockSolenoid = new DoubleSolenoid(PneumaticsConstants.moduleType,
+        ManipulatorConstants.climberLockSolenoidForwardChannel, ManipulatorConstants.climberLockSolenoidReverseChannel);
 
     /** Creates a new manipulator. */
     public Manipulator()
     {
-        climberSolenoid.set(Value.kOff);
+        moveToIntakePosition();
+        climbOff();
+        climbUnlock();
     }
 
     public void moveToAmpPosition()
     {
         noteSolenoid.set(Value.kReverse);
     }
-    
+
     public void moveToClimbingPosition()
     {
         noteSolenoid.set(Value.kReverse);
@@ -47,14 +52,27 @@ public class Manipulator extends SubsystemBase
 
     public void climb()
     {
-        // TODO: Determine what to do, if anything, with the note solenoid.
-        climberSolenoid.set(Value.kForward);
+        climberSolenoid.set(Value.kReverse);
     }
 
     public void climbOff()
     {
-        // TODO: Determine what to do, if anything, with the note solenoid.
-        climberSolenoid.set(Value.kOff);
+        climberSolenoid.set(Value.kForward);
+    }
+
+    public void climbLockOff()
+    {
+        climberLockSolenoid.set(Value.kOff);
+    }
+
+    public void climbLock()
+    {
+        climberLockSolenoid.set(Value.kForward);
+    }
+
+    public void climbUnlock()
+    {
+        climberLockSolenoid.set(Value.kReverse);
     }
 
     @Override

@@ -83,7 +83,7 @@ public class Intake extends SubsystemBase
 
     public boolean hasNote()
     {
-        return opticalSensor.get();
+        return false;
     }
 
     @Override
