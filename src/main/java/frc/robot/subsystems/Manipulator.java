@@ -19,15 +19,11 @@ public class Manipulator extends SubsystemBase
         ManipulatorConstants.climbingSolenoidForwardChannel,
         ManipulatorConstants.climbingSolenoidReverseChannel);
 
-    private final DoubleSolenoid climberLockSolenoid = new DoubleSolenoid(PneumaticsConstants.moduleType,
-        ManipulatorConstants.climberLockSolenoidForwardChannel, ManipulatorConstants.climberLockSolenoidReverseChannel);
-
     /** Creates a new manipulator. */
     public Manipulator()
     {
         moveToIntakePosition();
         climbOff();
-        climbUnlock();
     }
 
     public void moveToAmpPosition()
@@ -58,21 +54,6 @@ public class Manipulator extends SubsystemBase
     public void climbOff()
     {
         climberSolenoid.set(Value.kForward);
-    }
-
-    public void climbLockOff()
-    {
-        climberLockSolenoid.set(Value.kOff);
-    }
-
-    public void climbLock()
-    {
-        climberLockSolenoid.set(Value.kForward);
-    }
-
-    public void climbUnlock()
-    {
-        climberLockSolenoid.set(Value.kReverse);
     }
 
     @Override

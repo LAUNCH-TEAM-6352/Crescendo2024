@@ -115,9 +115,10 @@ public class RobotContainer
         {
             // In competition, don't take chances and always create all OI devices:
             codriverGamepad = new XboxController(OperatorConstants.codriverGamepadPort);
-            driverGamepad = null;
+            driverGamepad = new XboxController(OperatorConstants.driverGamepadPort);
             driverJoystick = null;
         }
+
         // Create pneumatics compressor:
         compressor = gameData.isBlank() || gameData.contains("-p-")
             ? Optional.of(new Compressor(PneumaticsConstants.moduleId, PneumaticsConstants.moduleType))
@@ -135,12 +136,15 @@ public class RobotContainer
         indexer = gameData.isBlank() || gameData.contains("-idx-")
             ? Optional.of(new Indexer())
             : Optional.empty();
+
         manipulator = gameData.isBlank() || gameData.contains("-m-")
             ? Optional.of(new Manipulator())
             : Optional.empty();
+
         shooter = gameData.isBlank() || gameData.contains("-s-")
             ? Optional.of(new Shooter())
             : Optional.empty();
+            
         // Configure default commands
         configureDefaultCommands();
 
@@ -214,14 +218,8 @@ public class RobotContainer
         new JoystickButton(codriverGamepad, Button.kLeftStick.value)
             .onTrue(new InstantCommand(() -> manipulator.climb()));
 
-        new JoystickButton(codriverGamepad, Button.kBack.value)
-            .onTrue(new InstantCommand(() -> manipulator.climbOff()));
-
         new JoystickButton(codriverGamepad, Button.kRightStick.value)
-            .onTrue(new InstantCommand(() -> manipulator.climbLock()));
-
-        new JoystickButton(codriverGamepad, Button.kStart.value)
-            .onTrue(new InstantCommand(() -> manipulator.climbUnlock()));
+            .onTrue(new InstantCommand(() -> manipulator.climbOff()));
 
         // new JoystickButton(codriverGamepad, Button.kStart.value)
         //     .onTrue(new InstantCommand(() -> manipulator.climbLockOff()));
