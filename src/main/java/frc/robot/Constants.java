@@ -70,11 +70,11 @@ public final class Constants
 
         public static final class UpperPIDConstants
         {
-            public static final double kP = 0.00004;
+            public static final double kP = 0.00001;
             public static final double kI = 0.0000035;
             public static final double kD = 3.0;
             public static final int kIZ = 0;
-            public static final double kFF = 0.0001;
+            public static final double kFF = 0.00009;
             public static final double minOutput = -1;
             public static final double maxOutput = 1;
         }
@@ -117,6 +117,8 @@ public final class Constants
         public static final int climbingSolenoidReverseChannel = 3;
         public static final int noteSolenoidForwardChannel = 0;
         public static final int noteSolenoidReverseChannel = 1;
+        public static final int climberLockSolenoidForwardChannel = 4;
+        public static final int climberLockSolenoidReverseChannel = 5;
     }
 
     public static final class ShooterConstants
@@ -125,8 +127,8 @@ public final class Constants
         public static final int rightMotorChannel = 46;
 
         // TODO: Tune motor RPM values
-        public static final double ampRpm = 1000.0;
-        public static final double speakerRpm = 4000.0;
+        public static final double ampRpm = 2000.0;
+        public static final double speakerRpm = 5000.0;
 
         // Tolerance for determining if motors are at the desired velocity:
         public static final double rpmTolerance = 10;
@@ -158,7 +160,7 @@ public final class Constants
     {
         public static final double wheelDiameter = 4;
         public static final double maximumLinearVelocityMps = 5.0;
-        public static final double maximumRotationRateRps = Math.PI;
+        public static final double maximumRotationRateRps = 4 * Math.PI;
 
         // Don't mess with this!
         public static final double maxModuleSpeedMps = 4.5;
