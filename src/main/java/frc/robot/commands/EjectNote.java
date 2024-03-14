@@ -34,7 +34,7 @@ public class EjectNote extends Command
     @Override
     public void initialize()
     {
-        //manipulator.moveToIntakePosition();
+        manipulator.moveToIntakePosition();
         intake.eject();
         indexer.eject();
     }
