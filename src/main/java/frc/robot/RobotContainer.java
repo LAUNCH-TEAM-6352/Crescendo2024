@@ -10,6 +10,11 @@ import frc.robot.commands.EjectNote;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.ShootNoteIntoAmp;
 import frc.robot.commands.ShootNoteIntoSpeaker;
+import frc.robot.commands.test.TestDriveTrain;
+import frc.robot.commands.test.TestIndexer;
+import frc.robot.commands.test.TestIntake;
+import frc.robot.commands.test.TestManipulator;
+import frc.robot.commands.test.TestShooter;
 import frc.robot.Constants.CameraConstants;
 import frc.robot.Constants.IndexerConstants;
 import frc.robot.Constants.IntakeConstants;
@@ -37,6 +42,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -334,6 +340,40 @@ public class RobotContainer
     {
         return null;
         // An example command will be run in autonomous
+    }
 
+    /**
+     * Builds a command to run when Test mode is enabled in the Driver Station.
+     */
+    public Command getTestCommand()
+    {
+        var group = new SequentialCommandGroup();
+        
+        if (driveTrain.isPresent())
+        {
+            group.addCommands(new TestDriveTrain(driveTrain.get()));
+        }
+        
+        if (intake.isPresent())
+        {
+            group.addCommands(new TestIntake(intake.get()));
+        }
+        
+        if (indexer.isPresent())
+        {
+            group.addCommands(new TestIndexer(indexer.get()));
+        }
+        
+        if (shooter.isPresent())
+        {
+            group.addCommands(new TestShooter(shooter.get()));
+        }
+        
+        if (manipulator.isPresent())
+        {
+            group.addCommands(new TestManipulator(manipulator.get()));
+        }
+
+        return group;
     }
 }

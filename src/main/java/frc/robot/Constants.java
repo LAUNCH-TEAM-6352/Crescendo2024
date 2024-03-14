@@ -178,6 +178,25 @@ public final class Constants
         public static final TelemetryVerbosity swerveDriveTelemetryVerbosity = TelemetryVerbosity.HIGH;   
     }
 
+    public static class TestConstants
+    {
+        public static final double inbetweenTimeSecs = 1;
+
+        public static final double swerveModuleMotorTimeoutSecs = 5;
+        public static final double swerveModuleDriveForwardPercentOutput = 0.25;
+        public static final double swerveModuleDriveReversePercentOutput = -0.25;
+        public static final double swerveModuleAngleCcwPercentOutput = 0.25;
+        public static final double swerveModuleAngleCwPercentOutput = -0.25;
+
+        public static final double intakeMotorTimeoutSecs = 5;
+
+        public static final double indexerMotorTimeoutSecs = 5;
+
+        public static final double shooterMotorTimeoutSecs = 5;
+
+        public static final double manipulatorTimeoutSecs = 5;
+    }
+
     public static final class PathPlannerConstants
     {
         public static final PIDConstants TRANSLATION_PID = new PIDConstants(0.7, 0, 0);
