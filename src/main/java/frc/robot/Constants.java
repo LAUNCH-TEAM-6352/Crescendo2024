@@ -127,11 +127,11 @@ public final class Constants
         public static final int rightMotorChannel = 46;
 
         // TODO: Tune motor RPM values
-        public static final double ampRpm = 2000.0;
-        public static final double speakerRpm = 5000.0;
+        public static final double ampRpm = 1500.0;
+        public static final double speakerRpm = 2400.0;
 
         // Tolerance for determining if motors are at the desired velocity:
-        public static final double rpmTolerance = 10;
+        public static final double rpmTolerance = 100;
 
         public static final boolean isLeftMotorInverted = true;
         public static final boolean isRightMotorInverted = false;
@@ -175,7 +175,7 @@ public final class Constants
     public static class DriveConstants
     {
         public static final boolean isFieldRelative = true;
-        public static final TelemetryVerbosity swerveDriveTelemetryVerbosity = TelemetryVerbosity.HIGH;   
+        public static final TelemetryVerbosity swerveDriveTelemetryVerbosity = TelemetryVerbosity.LOW;   
     }
 
     public static class TestConstants

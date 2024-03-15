@@ -18,7 +18,7 @@
     "drive": true,
     "angle": false
   },
-  "absoluteEncoderOffset": 93.8 ,
+  "absoluteEncoderOffset": 94.25 ,
   "absoluteEncoderInverted" : false,
   "location": {
     "x": 6.25,

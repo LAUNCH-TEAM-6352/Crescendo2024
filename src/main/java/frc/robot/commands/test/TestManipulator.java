@@ -23,10 +23,16 @@ public class TestManipulator extends SequentialCommandGroup
             new TestManipulatorAmp(manipulator).withTimeout(TestConstants.manipulatorTimeoutSecs),
             new WaitCommand(TestConstants.inbetweenTimeSecs),
 
+            new TestManipulatorIntake(manipulator).withTimeout(TestConstants.manipulatorTimeoutSecs),
+            new WaitCommand(TestConstants.inbetweenTimeSecs),
+
             new TestManipulatorClimb(manipulator).withTimeout(TestConstants.manipulatorTimeoutSecs),
             new WaitCommand(TestConstants.inbetweenTimeSecs),
 
             new TestManipulatorClimbOff(manipulator).withTimeout(TestConstants.manipulatorTimeoutSecs),
+            new WaitCommand(TestConstants.inbetweenTimeSecs),
+
+            new TestManipulatorIntake(manipulator).withTimeout(TestConstants.manipulatorTimeoutSecs),
             new WaitCommand(TestConstants.inbetweenTimeSecs)
         );
     }
