@@ -98,9 +98,9 @@ public class RobotContainer
         // Start a camera server for a simple USB camera:
         if (gameData.contains("-cam-") || gameData.isBlank())
         {
-            var camera = CameraServer.startAutomaticCapture();
-            camera.setFPS(CameraConstants.fps);
-            camera.setResolution(CameraConstants.width, CameraConstants.height);
+            // var camera = CameraServer.startAutomaticCapture();
+            // camera.setFPS(CameraConstants.fps);
+            // camera.setResolution(CameraConstants.width, CameraConstants.height);
         }
 
         // Create OI devices:
