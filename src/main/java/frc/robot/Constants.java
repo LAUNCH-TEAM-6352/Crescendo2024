@@ -42,15 +42,14 @@ public final class Constants
         public static final int lowerRollerMotorChannel = 43;
         public static final int upperRollerMotorChannel = 44;
 
-        // TODO: Tune RPM values
         public static final double lowerRollerMotorIntakeRpm = 2100;
         public static final double upperRollerMotorIntakeRpm = 2100;
 
         public static final double lowerRollerMotorEjectRpm = -2100;
         public static final double upperRollerMotorEjectRpm = -2100;
 
-        public static final double lowerRollerMotorFeedRpm = 2100;
-        public static final double upperRollerMotorFeedRpm = 2100;
+        public static final double lowerRollerMotorFeedRpm = 3500;
+        public static final double upperRollerMotorFeedRpm = 3500;
         
         public static final boolean isLowerRollerMotorInverted = false;
         public static final boolean isUpperRollerMotorInverted = true;
@@ -87,7 +86,6 @@ public final class Constants
 
         public static final int opticalSensorPort = 0;
 
-         // TODO: Tune motor RPM values
         public static final double largeRollerMotorIntakeRpm = 2600;
         public static final double smallRollerMotorIntakeRpm = 2100;
 
@@ -126,7 +124,6 @@ public final class Constants
         public static final int leftMotorChannel = 45;
         public static final int rightMotorChannel = 46;
 
-        // TODO: Tune motor RPM values
         public static final double ampRpm = 1500.0;
         public static final double speakerRpm = 2400.0;
 
@@ -159,11 +156,11 @@ public final class Constants
     public static final class SwerveConstants
     {
         public static final double wheelDiameter = 4;
-        public static final double maximumLinearVelocityMps = 5.0;
+        public static final double maximumLinearVelocityMps = 10.0;
         public static final double maximumRotationRateRps = 4 * Math.PI;
 
         // Don't mess with this!
-        public static final double maxModuleSpeedMps = 4.5;
+        public static final double maxModuleSpeedMps = 5.0;
 
         public static final double gearRatioDriveMk4 = 8.14;
         public static final double gearRatioDriveMk4i = 8.14;

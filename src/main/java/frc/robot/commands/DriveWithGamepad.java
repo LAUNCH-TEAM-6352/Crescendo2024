@@ -1,7 +1,11 @@
 package frc.robot.commands;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.OperatorConstants;
@@ -13,6 +17,8 @@ public class DriveWithGamepad extends Command
     private final DriveTrain DriveTrain;
     private final XboxController driverController;
     private final SendableChooser<Boolean> driveOrientationChooser;
+
+    private Optional<Alliance> alliance;
 
     public DriveWithGamepad(DriveTrain driveTrain, XboxController driverController,
                     SendableChooser<Boolean> driveOrientationChooser)
@@ -28,12 +34,18 @@ public class DriveWithGamepad extends Command
     @Override
     public void initialize()
     {
-        // Perform any initialization if needed
+        alliance = DriverStation.getAlliance();
     }
 
     @Override
     public void execute()
     {
+        // Dedtermine if we need to invert drive directions based upon drive orientation:
+        var isFieldRelative = driveOrientationChooser.getSelected(); 
+        var fieldInversionFactor = isFieldRelative && alliance.isPresent() && alliance.get() == Alliance.Red
+            ? -1
+            : 1;
+
         // Get gamePad inputs
         double leftX = driverController.getLeftX();
         double leftY = -driverController.getLeftY();
@@ -41,8 +53,8 @@ public class DriveWithGamepad extends Command
         double rightY = -driverController.getRightY();
 
         // Apply deadband and sensitivity adjustments
-        leftX = applyDeadbandAndSensitivity(leftX);
-        leftY = applyDeadbandAndSensitivity(leftY);
+        leftX = fieldInversionFactor * applyDeadbandAndSensitivity(leftX);
+        leftY = fieldInversionFactor * applyDeadbandAndSensitivity(leftY);
         rightX = applyDeadbandAndSensitivity(rightX);
         rightY = applyDeadbandAndSensitivity(rightY);
 
@@ -51,7 +63,7 @@ public class DriveWithGamepad extends Command
         double speedY = -leftX * SwerveConstants.maximumLinearVelocityMps;
         double rotationRate = -rightX * SwerveConstants.maximumRotationRateRps;
         Translation2d translationSpeed = new Translation2d(speedX, speedY);
-        DriveTrain.drive(translationSpeed, rotationRate, driveOrientationChooser.getSelected());
+        DriveTrain.drive(translationSpeed, rotationRate, isFieldRelative);
     }
 
     private double applyDeadbandAndSensitivity(double input)
