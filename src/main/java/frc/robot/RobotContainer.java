@@ -331,6 +331,7 @@ public class RobotContainer
         autoChooser.setDefaultOption("None", new WaitCommand(5));
         autoChooser.addOption("Leave", new PathPlannerAuto("Leave"));
         autoChooser.addOption("Defensive", new PathPlannerAuto("Defensive"));
+        autoChooser.addOption("ShootAndLeave", getShootAndLeaveCommand());
         SmartDashboard.putData("Auto Selection", autoChooser);
     }
 
@@ -377,5 +378,15 @@ public class RobotContainer
         }
 
         return group;
+    }
+
+    public Command getShootAndLeaveCommand()
+    {
+        return new SequentialCommandGroup
+        (
+            new WaitCommand(3),
+            new ShootNoteIntoSpeaker(indexer.get(), shooter.get(), manipulator.get()).withTimeout(5),
+            new PathPlannerAuto("LeaveFromSpeaker")
+        );
     }
 }

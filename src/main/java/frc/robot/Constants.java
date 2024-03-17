@@ -125,7 +125,7 @@ public final class Constants
         public static final int rightMotorChannel = 46;
 
         public static final double ampRpm = 1500.0;
-        public static final double speakerRpm = 2400.0;
+        public static final double speakerRpm = 3500.0;
 
         // Tolerance for determining if motors are at the desired velocity:
         public static final double rpmTolerance = 100;
