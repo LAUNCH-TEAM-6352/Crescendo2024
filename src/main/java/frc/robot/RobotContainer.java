@@ -32,6 +32,7 @@ import frc.robot.subsystems.Shooter;
 
 import java.util.Optional;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -153,6 +154,9 @@ public class RobotContainer
         shooter = gameData.isBlank() || gameData.contains("-s-")
             ? Optional.of(new Shooter())
             : Optional.empty();
+
+        // Configure commands for Path Planner:
+        configurePathPlannerNamedCommands();
             
         // Configure default commands
         configureDefaultCommands();
@@ -164,6 +168,16 @@ public class RobotContainer
         configureSmartDashboard();
 
     }
+
+    /**
+     * Configure named commands for Path Planner.
+     */
+    private void configurePathPlannerNamedCommands()
+    {
+        // Register a named command like this:
+        NamedCommands.registerCommand("wait5", new WaitCommand(5));
+    }
+
 
     /**
      * Configures the default commands.

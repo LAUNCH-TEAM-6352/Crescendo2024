@@ -128,7 +128,7 @@ public final class Constants
         public static final double speakerRpm = 3500.0;
 
         // Tolerance for determining if motors are at the desired velocity:
-        public static final double rpmTolerance = 100;
+        public static final double rpmTolerance = 50;
 
         public static final boolean isLeftMotorInverted = true;
         public static final boolean isRightMotorInverted = false;
