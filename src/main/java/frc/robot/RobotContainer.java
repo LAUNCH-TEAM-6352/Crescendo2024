@@ -32,6 +32,8 @@ import frc.robot.subsystems.Shooter;
 
 import java.util.Optional;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -43,6 +45,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -98,9 +101,9 @@ public class RobotContainer
         // Start a camera server for a simple USB camera:
         if (gameData.contains("-cam-") || gameData.isBlank())
         {
-            // var camera = CameraServer.startAutomaticCapture();
-            // camera.setFPS(CameraConstants.fps);
-            // camera.setResolution(CameraConstants.width, CameraConstants.height);
+            var camera = CameraServer.startAutomaticCapture();
+            camera.setFPS(CameraConstants.fps);
+            camera.setResolution(CameraConstants.width, CameraConstants.height);
         }
 
         // Create OI devices:
@@ -177,7 +180,6 @@ public class RobotContainer
             {
                 dt.setDefaultCommand(new DriveWithGamepad(dt, driverGamepad, driveOrientationChooser));
             }
-
         });
     }
 
@@ -326,9 +328,11 @@ public class RobotContainer
 
     private void configureAutoChooser(SendableChooser<Command> autoChooser)
     {
-        // autoChooser.setDefaultOption("Leave", new PathPlannerAuto("Leave"));
-        // autoChooser.addOption("Return", new PathPlannerAuto("Return"));
-        // SmartDashboard.putData("Auto Selection", autoChooser);
+        autoChooser.setDefaultOption("None", new WaitCommand(5));
+        autoChooser.addOption("Leave", new PathPlannerAuto("Leave"));
+        autoChooser.addOption("Defensive", new PathPlannerAuto("Defensive"));
+        autoChooser.addOption("ShootAndLeave", getShootAndLeaveCommand());
+        SmartDashboard.putData("Auto Selection", autoChooser);
     }
 
     /**
@@ -338,8 +342,7 @@ public class RobotContainer
      */
     public Command getAutonomousCommand()
     {
-        return null;
-        // An example command will be run in autonomous
+        return autoChooser.getSelected();
     }
 
     /**
@@ -375,5 +378,15 @@ public class RobotContainer
         }
 
         return group;
+    }
+
+    public Command getShootAndLeaveCommand()
+    {
+        return new SequentialCommandGroup
+        (
+            new WaitCommand(3),
+            new ShootNoteIntoSpeaker(indexer.get(), shooter.get(), manipulator.get()).withTimeout(5),
+            new PathPlannerAuto("LeaveFromSpeaker")
+        );
     }
 }
