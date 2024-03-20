@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Manipulator;
@@ -21,6 +23,8 @@ public class ShootNoteIntoAmp extends Command
     private final Indexer indexer;
     private final Shooter shooter;
     private final Manipulator manipulator;
+    private String timeoutKey = null;
+    private long stopTime;
     
     private boolean hasShooterBeenFed;
     /**
@@ -37,6 +41,12 @@ public class ShootNoteIntoAmp extends Command
         addRequirements(indexer, shooter, manipulator);
     }
 
+    public ShootNoteIntoAmp(Indexer indexer, Shooter shooter, Manipulator manipulator, String timeoutKey)
+    {
+        this(indexer, shooter, manipulator);
+        this.timeoutKey = timeoutKey;
+    }
+
     // Called when the command is initially scheduled.
     @Override
     public void initialize()
@@ -44,6 +54,10 @@ public class ShootNoteIntoAmp extends Command
         manipulator.moveToAmpPosition();
         shooter.setAmpSpeed();
         hasShooterBeenFed = false;
+
+        stopTime = timeoutKey == null
+            ? Long.MAX_VALUE
+            : RobotController.getFPGATime() + (long) (SmartDashboard.getNumber(timeoutKey, 180) * 1000000);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -70,6 +84,6 @@ public class ShootNoteIntoAmp extends Command
     @Override
     public boolean isFinished()
     {
-        return false;
+        return RobotController.getFPGATime() >= stopTime;
     }
 }

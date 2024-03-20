@@ -21,6 +21,13 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
  */
 public final class Constants
 {
+    public static final class AutoConstants
+    {
+        public static final double shootWaitSecs = 3;
+        public static final double shootTimeout = 3;
+        public static final double intakeTimeout = 3;
+    }
+
     public static final class OperatorConstants
     {
         public static final int driverJoystickPort = 0;
@@ -50,7 +57,7 @@ public final class Constants
 
         public static final double lowerRollerMotorFeedRpm = 3500;
         public static final double upperRollerMotorFeedRpm = 3500;
-        
+
         public static final boolean isLowerRollerMotorInverted = false;
         public static final boolean isUpperRollerMotorInverted = true;
 
@@ -172,7 +179,7 @@ public final class Constants
     public static class DriveConstants
     {
         public static final boolean isFieldRelative = true;
-        public static final TelemetryVerbosity swerveDriveTelemetryVerbosity = TelemetryVerbosity.LOW;   
+        public static final TelemetryVerbosity swerveDriveTelemetryVerbosity = TelemetryVerbosity.LOW;
     }
 
     public static class TestConstants
@@ -202,6 +209,12 @@ public final class Constants
 
     public static final class DashboardConstants
     {
+        public static final class AutoKeys
+        {
+            public static final String shootWaitTime = "Shoot Wait Time Secs";
+            public static final String shootTimeout = "Shoot Timeout";
+            public static final String intakeTimeout = "Intake Timeout";
+        }
         public static final class IndexerKeys
         {
             public static final String lowerRollerIntakeRpm = "Idx Lw In RPM";
@@ -233,4 +246,5 @@ public final class Constants
             public static final String rpmTolerance = "Shoot RPM Tol";
         }
     }
+
 }
