@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
@@ -16,6 +18,8 @@ public class IntakeNote extends Command
     private final Intake intake;
     private final Indexer indexer;
     private final Manipulator manipulator;
+    private String timeoutKey = null;
+    private long stopTime;
 
     /**
      * 
@@ -30,6 +34,12 @@ public class IntakeNote extends Command
         // Specify required subsystems
         addRequirements(intake, indexer, manipulator);
     }
+
+    public IntakeNote(Intake intake, Indexer indexer, Manipulator manipulator, String timeoutKey)
+    {
+        this(intake , indexer, manipulator);
+        this.timeoutKey = timeoutKey;
+    }
     
     @Override
     public void initialize()
@@ -37,6 +47,10 @@ public class IntakeNote extends Command
         manipulator.moveToIntakePosition();
         indexer.intake();
         intake.intake();
+
+        stopTime = timeoutKey == null
+            ? Long.MAX_VALUE
+            : RobotController.getFPGATime() + (long) (SmartDashboard.getNumber(timeoutKey, 180) * 1000000);
     }
 
     @Override
@@ -57,6 +71,6 @@ public class IntakeNote extends Command
     @Override
     public boolean isFinished()
     {
-        return intake.hasNote();
+        return RobotController.getFPGATime() >= stopTime;
     }
 }

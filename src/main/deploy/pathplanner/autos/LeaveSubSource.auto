@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8259172881982126,
-      "y": 6.688710831967119
+      "x": 0.8324547064849054,
+      "y": 4.394197672421603
     },
-    "rotation": 58.46520809481169
+    "rotation": -61.032339353936024
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MoveToAmp"
+            "pathName": "LeaveSubSource"
           }
         }
       ]

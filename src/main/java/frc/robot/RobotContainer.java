@@ -10,17 +10,20 @@ import frc.robot.commands.EjectNote;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.ShootNoteIntoAmp;
 import frc.robot.commands.ShootNoteIntoSpeaker;
+import frc.robot.commands.Wait;
 import frc.robot.commands.test.TestDriveTrain;
 import frc.robot.commands.test.TestIndexer;
 import frc.robot.commands.test.TestIntake;
 import frc.robot.commands.test.TestManipulator;
 import frc.robot.commands.test.TestShooter;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.CameraConstants;
 import frc.robot.Constants.IndexerConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.PneumaticsConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.DashboardConstants.AutoKeys;
 import frc.robot.Constants.DashboardConstants.IndexerKeys;
 import frc.robot.Constants.DashboardConstants.IntakeKeys;
 import frc.robot.Constants.DashboardConstants.ShooterKeys;
@@ -32,6 +35,7 @@ import frc.robot.subsystems.Shooter;
 
 import java.util.Optional;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -153,7 +157,10 @@ public class RobotContainer
         shooter = gameData.isBlank() || gameData.contains("-s-")
             ? Optional.of(new Shooter())
             : Optional.empty();
-            
+
+        // Configure commands for Path Planner:
+        configurePathPlannerNamedCommands();
+
         // Configure default commands
         configureDefaultCommands();
 
@@ -162,6 +169,21 @@ public class RobotContainer
 
         // Configure smart dashboard
         configureSmartDashboard();
+
+    }
+
+    /**
+     * Configure named commands for Path Planner.
+     */
+    private void configurePathPlannerNamedCommands()
+    {
+        // Register a named command like this:
+        NamedCommands.registerCommand("wait5", new WaitCommand(5));
+        NamedCommands.registerCommand("Shoot Wait", new Wait(AutoKeys.shootWaitTime));
+        NamedCommands.registerCommand("Shoot Speaker",
+            new ShootNoteIntoSpeaker(indexer.get(), shooter.get(), manipulator.get(), AutoKeys.shootTimeout));
+        NamedCommands.registerCommand("Intake Note",
+            new IntakeNote(intake.get(), indexer.get(), manipulator.get(), AutoKeys.intakeTimeout));
 
     }
 
@@ -230,7 +252,7 @@ public class RobotContainer
             .onTrue(new InstantCommand(() -> manipulator.climbOff()));
 
         // new JoystickButton(codriverGamepad, Button.kStart.value)
-        //     .onTrue(new InstantCommand(() -> manipulator.climbLockOff()));
+        // .onTrue(new InstantCommand(() -> manipulator.climbLockOff()));
     }
 
     /**
@@ -278,6 +300,14 @@ public class RobotContainer
         // Configure chooser widgets:
         configureDriveOrientationChooser(driveOrientationChooser);
         configureAutoChooser(autoChooser);
+        configureAutoParameters();
+    }
+
+    private void configureAutoParameters()
+    {
+        SmartDashboard.putNumber(AutoKeys.shootWaitTime, AutoConstants.shootWaitSecs);
+        SmartDashboard.putNumber(AutoKeys.shootTimeout, AutoConstants.shootTimeout);
+        SmartDashboard.putNumber(AutoKeys.intakeTimeout, AutoConstants.intakeTimeout);
     }
 
     private void configureSmartDashboard(DriveTrain driveTrain)
@@ -329,9 +359,15 @@ public class RobotContainer
     private void configureAutoChooser(SendableChooser<Command> autoChooser)
     {
         autoChooser.setDefaultOption("None", new WaitCommand(5));
-        autoChooser.addOption("Leave", new PathPlannerAuto("Leave"));
+        autoChooser.addOption("", new PathPlannerAuto("SubMiddleShootTwice"));
+
+        autoChooser.addOption("Amp Sub Shoot & Leave", getShootFromSubAmpAndLeaveCommand());
+        autoChooser.addOption("Center Sub Shoot & Leave", getShootFromSubMiddleAndLeaveCommand());
+        autoChooser.addOption("Source Sub Shoot & Leave", getShootFromSubSourceAndLeaveCommand());
+
+        autoChooser.addOption("Leave Straight", new PathPlannerAuto("Leave"));
         autoChooser.addOption("Defensive", new PathPlannerAuto("Defensive"));
-        autoChooser.addOption("ShootAndLeave", getShootAndLeaveCommand());
+
         SmartDashboard.putData("Auto Selection", autoChooser);
     }
 
@@ -351,27 +387,27 @@ public class RobotContainer
     public Command getTestCommand()
     {
         var group = new SequentialCommandGroup();
-        
+
         if (driveTrain.isPresent())
         {
             group.addCommands(new TestDriveTrain(driveTrain.get()));
         }
-        
+
         if (intake.isPresent())
         {
             group.addCommands(new TestIntake(intake.get()));
         }
-        
+
         if (indexer.isPresent())
         {
             group.addCommands(new TestIndexer(indexer.get()));
         }
-        
+
         if (shooter.isPresent())
         {
             group.addCommands(new TestShooter(shooter.get()));
         }
-        
+
         if (manipulator.isPresent())
         {
             group.addCommands(new TestManipulator(manipulator.get()));
@@ -380,13 +416,27 @@ public class RobotContainer
         return group;
     }
 
-    public Command getShootAndLeaveCommand()
+    public Command getShootFromSubAmpAndLeaveCommand()
     {
-        return new SequentialCommandGroup
-        (
+        return new SequentialCommandGroup(
             new WaitCommand(3),
             new ShootNoteIntoSpeaker(indexer.get(), shooter.get(), manipulator.get()).withTimeout(5),
-            new PathPlannerAuto("LeaveFromSpeaker")
-        );
+            new PathPlannerAuto("LeaveSubAmp"));
+    }
+
+    public Command getShootFromSubMiddleAndLeaveCommand()
+    {
+        return new SequentialCommandGroup(
+            new WaitCommand(3),
+            new ShootNoteIntoSpeaker(indexer.get(), shooter.get(), manipulator.get()).withTimeout(5),
+            new PathPlannerAuto("LeaveSubMiddle"));
+    }
+
+    public Command getShootFromSubSourceAndLeaveCommand()
+    {
+        return new SequentialCommandGroup(
+            new WaitCommand(3),
+            new ShootNoteIntoSpeaker(indexer.get(), shooter.get(), manipulator.get()).withTimeout(5),
+            new PathPlannerAuto("LeaveSubSource"));
     }
 }
