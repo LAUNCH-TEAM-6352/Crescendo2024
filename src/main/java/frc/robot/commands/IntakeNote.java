@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Manipulator;
@@ -50,7 +51,7 @@ public class IntakeNote extends Command
 
         stopTime = timeoutKey == null
             ? Long.MAX_VALUE
-            : RobotController.getFPGATime() + (long) (SmartDashboard.getNumber(timeoutKey, 180) * 1000000);
+            : RobotController.getFPGATime() + (long) (Constants.microsecondsPerSecond * SmartDashboard.getNumber(timeoutKey, 180));
     }
 
     @Override
