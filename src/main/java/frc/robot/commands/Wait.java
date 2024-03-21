@@ -7,7 +7,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 
+/**
+ * This custom implementation of the WPILib WaitCommand dynamically
+ * gets the time to wait from the SmartDashboard.
+ */
 public class Wait extends Command
 {
     private String dashboardKey = null;
@@ -23,7 +28,7 @@ public class Wait extends Command
     @Override
     public void initialize()
     {
-        stopTime = RobotController.getFPGATime() + (long) (SmartDashboard.getNumber(dashboardKey, 0) * 1000000);
+        stopTime = RobotController.getFPGATime() + (long) (Constants.microsecondsPerSecond * SmartDashboard.getNumber(dashboardKey, 0));
     }
 
     // Called every time the scheduler runs while the command is scheduled.

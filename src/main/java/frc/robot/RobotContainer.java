@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.commands.DriveWithGamepad;
-import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.EjectNote;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.ShootNoteIntoAmp;
@@ -75,7 +74,6 @@ public class RobotContainer
     // OI devices:
     private final XboxController driverGamepad;
     private final XboxController codriverGamepad;
-    private final Joystick driverJoystick;
 
     SendableChooser<Boolean> driveOrientationChooser = new SendableChooser<>();
     SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -117,9 +115,6 @@ public class RobotContainer
             driverGamepad = DriverStation.isJoystickConnected(OperatorConstants.driverGamepadPort)
                 ? new XboxController(OperatorConstants.driverGamepadPort)
                 : null;
-            driverJoystick = DriverStation.isJoystickConnected(OperatorConstants.driverJoystickPort)
-                ? new Joystick(OperatorConstants.driverJoystickPort)
-                : null;
             codriverGamepad = DriverStation.isJoystickConnected(OperatorConstants.codriverGamepadPort)
                 ? new XboxController(OperatorConstants.codriverGamepadPort)
                 : null;
@@ -129,7 +124,6 @@ public class RobotContainer
             // In competition, don't take chances and always create all OI devices:
             codriverGamepad = new XboxController(OperatorConstants.codriverGamepadPort);
             driverGamepad = new XboxController(OperatorConstants.driverGamepadPort);
-            driverJoystick = null;
         }
 
         // Create pneumatics compressor:
@@ -184,7 +178,6 @@ public class RobotContainer
             new ShootNoteIntoSpeaker(indexer.get(), shooter.get(), manipulator.get(), AutoKeys.shootTimeout));
         NamedCommands.registerCommand("Intake Note",
             new IntakeNote(intake.get(), indexer.get(), manipulator.get(), AutoKeys.intakeTimeout));
-
     }
 
     /**
@@ -194,11 +187,7 @@ public class RobotContainer
     {
         driveTrain.ifPresent((dt) ->
         {
-            if (driverJoystick != null)
-            {
-                dt.setDefaultCommand(new DriveWithJoystick(dt, driverJoystick, driveOrientationChooser));
-            }
-            else if (driverGamepad != null)
+            if (driverGamepad != null)
             {
                 dt.setDefaultCommand(new DriveWithGamepad(dt, driverGamepad, driveOrientationChooser));
             }
@@ -300,6 +289,8 @@ public class RobotContainer
         // Configure chooser widgets:
         configureDriveOrientationChooser(driveOrientationChooser);
         configureAutoChooser(autoChooser);
+
+        // Configure parameters used by auto routines:
         configureAutoParameters();
     }
 
@@ -419,7 +410,7 @@ public class RobotContainer
     public Command getShootFromSubAmpAndLeaveCommand()
     {
         return new SequentialCommandGroup(
-            new WaitCommand(3),
+            new Wait(AutoKeys.shootTimeout),
             new ShootNoteIntoSpeaker(indexer.get(), shooter.get(), manipulator.get()).withTimeout(5),
             new PathPlannerAuto("LeaveSubAmp"));
     }
@@ -427,7 +418,7 @@ public class RobotContainer
     public Command getShootFromSubMiddleAndLeaveCommand()
     {
         return new SequentialCommandGroup(
-            new WaitCommand(3),
+            new Wait(AutoKeys.shootTimeout),
             new ShootNoteIntoSpeaker(indexer.get(), shooter.get(), manipulator.get()).withTimeout(5),
             new PathPlannerAuto("LeaveSubMiddle"));
     }
@@ -435,7 +426,7 @@ public class RobotContainer
     public Command getShootFromSubSourceAndLeaveCommand()
     {
         return new SequentialCommandGroup(
-            new WaitCommand(3),
+            new Wait(AutoKeys.shootTimeout),
             new ShootNoteIntoSpeaker(indexer.get(), shooter.get(), manipulator.get()).withTimeout(5),
             new PathPlannerAuto("LeaveSubSource"));
     }

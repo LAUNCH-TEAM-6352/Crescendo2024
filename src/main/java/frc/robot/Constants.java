@@ -21,6 +21,8 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
  */
 public final class Constants
 {
+    public static final long microsecondsPerSecond = 1000000;
+
     public static final class AutoConstants
     {
         public static final double shootWaitSecs = 3;
