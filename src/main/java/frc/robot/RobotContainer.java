@@ -350,7 +350,7 @@ public class RobotContainer
     private void configureAutoChooser(SendableChooser<Command> autoChooser)
     {
         autoChooser.setDefaultOption("None", new WaitCommand(5));
-        autoChooser.addOption("", new PathPlannerAuto("SubMiddleShootTwice"));
+        autoChooser.addOption("Center Sub Shoot Twice", new PathPlannerAuto("SubMiddleShootTwice"));
 
         autoChooser.addOption("Amp Sub Shoot & Leave", getShootFromSubAmpAndLeaveCommand());
         autoChooser.addOption("Center Sub Shoot & Leave", getShootFromSubMiddleAndLeaveCommand());
