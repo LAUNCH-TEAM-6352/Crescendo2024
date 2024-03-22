@@ -349,14 +349,18 @@ public class RobotContainer
 
     private void configureAutoChooser(SendableChooser<Command> autoChooser)
     {
-        autoChooser.setDefaultOption("None", new WaitCommand(5));
-        autoChooser.addOption("", new PathPlannerAuto("SubMiddleShootTwice"));
+        
+        autoChooser.addOption("Center Sub Shoot Twice", new PathPlannerAuto("SubMiddleShootTwice"));
 
         autoChooser.addOption("Amp Sub Shoot & Leave", getShootFromSubAmpAndLeaveCommand());
         autoChooser.addOption("Center Sub Shoot & Leave", getShootFromSubMiddleAndLeaveCommand());
         autoChooser.addOption("Source Sub Shoot & Leave", getShootFromSubSourceAndLeaveCommand());
 
-        autoChooser.addOption("Leave Straight", new PathPlannerAuto("Leave"));
+        autoChooser.addOption("Amp Sub Shoot",  new PathPlannerAuto("SubAmpShoot"));
+        autoChooser.addOption("Center Sub Shoot", new PathPlannerAuto("SubMiddleShoot"));
+        autoChooser.addOption("Source Sub Shoot", new PathPlannerAuto("SubSourceShoot"));
+
+        autoChooser.addOption("Leave From Source", new PathPlannerAuto("Leave"));
         autoChooser.addOption("Defensive", new PathPlannerAuto("Defensive"));
 
         SmartDashboard.putData("Auto Selection", autoChooser);

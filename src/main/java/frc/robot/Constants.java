@@ -27,7 +27,7 @@ public final class Constants
     {
         public static final double shootWaitSecs = 3;
         public static final double shootTimeout = 3;
-        public static final double intakeTimeout = 3;
+        public static final double intakeTimeout = 2.4;
     }
 
     public static final class OperatorConstants
@@ -57,8 +57,8 @@ public final class Constants
         public static final double lowerRollerMotorEjectRpm = -2100;
         public static final double upperRollerMotorEjectRpm = -2100;
 
-        public static final double lowerRollerMotorFeedRpm = 3500;
-        public static final double upperRollerMotorFeedRpm = 3500;
+        public static final double lowerRollerMotorFeedRpm = 3700;
+        public static final double upperRollerMotorFeedRpm = 3700;
 
         public static final boolean isLowerRollerMotorInverted = false;
         public static final boolean isUpperRollerMotorInverted = true;
@@ -134,7 +134,7 @@ public final class Constants
         public static final int rightMotorChannel = 46;
 
         public static final double ampRpm = 1500.0;
-        public static final double speakerRpm = 3500.0;
+        public static final double speakerRpm = 3700.0;
 
         // Tolerance for determining if motors are at the desired velocity:
         public static final double rpmTolerance = 50;
