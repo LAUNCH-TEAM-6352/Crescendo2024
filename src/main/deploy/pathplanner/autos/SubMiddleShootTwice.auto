@@ -51,6 +51,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Shoot Wait"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Shoot Speaker"
           }
         }
