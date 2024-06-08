@@ -8,11 +8,14 @@ import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.DashboardConstants.IntakeKeys;
 import frc.robot.Constants.IntakeConstants.PIDConstants;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class Intake extends SubsystemBase
 {
@@ -22,8 +25,12 @@ public class Intake extends SubsystemBase
     private final CANSparkMax smallRollerMotor = new CANSparkMax(IntakeConstants.smallRollerMotorChannel,
         MotorType.kBrushless);
 
+    private final DigitalInput noteSensor = new DigitalInput(IntakeConstants.opticalSensorPort);
+    
+    private final XboxController gamepad;
+
     /** Creates a new Intake. */
-    public Intake()
+    public Intake(XboxController gamepad)
     {
         // Apply configuration common to both large and small roller motors:
         for (CANSparkMax motor : new CANSparkMax[] { largeRollerMotor, smallRollerMotor })
@@ -44,6 +51,7 @@ public class Intake extends SubsystemBase
         // Apply configuration unique to large and small roller motors:
         largeRollerMotor.setInverted(IntakeConstants.isLargeRollerMotorInverted);
         smallRollerMotor.setInverted(IntakeConstants.isSmallRollerMotorInverted);
+        this.gamepad = gamepad;
     }
 
     public void intake()
@@ -80,15 +88,18 @@ public class Intake extends SubsystemBase
 
     public boolean hasNote()
     {
-        return false;
+        return !noteSensor.get();
     }
 
     @Override
     public void periodic()
     {
         // This method will be called once per scheduler run
-        SmartDashboard.putBoolean(IntakeKeys.hasNote, hasNote());
+        var hasNote = hasNote();
+        gamepad.setRumble(RumbleType.kLeftRumble, hasNote ? 1 : 0);
+        SmartDashboard.putBoolean(IntakeKeys.hasNote, hasNote);
         SmartDashboard.putNumber("Intake/Large/RPM", largeRollerMotor.getEncoder().getVelocity());
         SmartDashboard.putNumber("Intake/Small/RPM", smallRollerMotor.getEncoder().getVelocity());
+
     }
 }

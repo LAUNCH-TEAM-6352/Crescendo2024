@@ -72,6 +72,6 @@ public class IntakeNote extends Command
     @Override
     public boolean isFinished()
     {
-        return RobotController.getFPGATime() >= stopTime;
+        return RobotController.getFPGATime() >= stopTime || intake.hasNote();
     }
 }

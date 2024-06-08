@@ -137,7 +137,7 @@ public class RobotContainer
             : Optional.empty();
 
         intake = gameData.isBlank() || gameData.contains("-i-")
-            ? Optional.of(new Intake())
+            ? Optional.of(new Intake(codriverGamepad))
             : Optional.empty();
 
         indexer = gameData.isBlank() || gameData.contains("-idx-")

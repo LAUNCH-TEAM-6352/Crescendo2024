@@ -93,7 +93,7 @@ public final class Constants
         public static final int largeRollerMotorChannel = 41;
         public static final int smallRollerMotorChannel = 42;
 
-        public static final int opticalSensorPort = 0;
+        public static final int opticalSensorPort = 8;
 
         public static final double largeRollerMotorIntakeRpm = 2600;
         public static final double smallRollerMotorIntakeRpm = 2100;
@@ -169,7 +169,7 @@ public final class Constants
         public static final double maximumRotationRateRps = 4 * Math.PI;
 
         // Don't mess with this!
-        public static final double maxModuleSpeedMps = 5.0;
+        public static final double maxModuleSpeedMps = 4.0;
 
         public static final double gearRatioDriveMk4 = 8.14;
         public static final double gearRatioDriveMk4i = 8.14;
