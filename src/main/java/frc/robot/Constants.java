@@ -27,7 +27,7 @@ public final class Constants
     {
         public static final double shootWaitSecs = 3;
         public static final double shootTimeout = 3;
-        public static final double intakeTimeout = 2.4;
+        public static final double intakeTimeout = 5.0;
     }
 
     public static final class OperatorConstants
@@ -94,6 +94,7 @@ public final class Constants
         public static final int smallRollerMotorChannel = 42;
 
         public static final int opticalSensorPort = 8;
+        public static final int opticalSensorPortAnalog = 0;
 
         public static final double largeRollerMotorIntakeRpm = 2600;
         public static final double smallRollerMotorIntakeRpm = 2100;
@@ -105,6 +106,8 @@ public final class Constants
         public static final boolean isSmallRollerMotorInverted = true;
 
         public static final IdleMode motorIdleMode = IdleMode.kBrake;
+
+        public static final double noteSensorVoltageThreshold = 0.8;
 
         public static final class PIDConstants
         {
@@ -237,6 +240,7 @@ public final class Constants
             public static final String largeRollerEjectRpm = "Itk Lg Ej RPM";
             public static final String smallRollerEjectRpm = "Itk Sm Ej RPM";
 
+            public static final String noteSensorVoltage = "Note Sensor V";
             public static final String hasNote = "Has Note";
         }
 
@@ -248,5 +252,4 @@ public final class Constants
             public static final String rpmTolerance = "Shoot RPM Tol";
         }
     }
-
 }

@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,7 +26,8 @@ public class Intake extends SubsystemBase
     private final CANSparkMax smallRollerMotor = new CANSparkMax(IntakeConstants.smallRollerMotorChannel,
         MotorType.kBrushless);
 
-    private final DigitalInput noteSensor = new DigitalInput(IntakeConstants.opticalSensorPort);
+        private final DigitalInput noteSensor = new DigitalInput(IntakeConstants.opticalSensorPort);
+        private final AnalogInput noteSensorAnalog = new AnalogInput(IntakeConstants.opticalSensorPortAnalog);
     
     private final XboxController gamepad;
 
@@ -88,7 +90,9 @@ public class Intake extends SubsystemBase
 
     public boolean hasNote()
     {
-        return !noteSensor.get();
+        var voltage = noteSensorAnalog.getVoltage();
+        SmartDashboard.putNumber(IntakeKeys.noteSensorVoltage, voltage);
+        return voltage > IntakeConstants.noteSensorVoltageThreshold;
     }
 
     @Override
