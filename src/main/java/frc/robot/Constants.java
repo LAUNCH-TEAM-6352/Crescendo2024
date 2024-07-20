@@ -93,8 +93,7 @@ public final class Constants
         public static final int largeRollerMotorChannel = 41;
         public static final int smallRollerMotorChannel = 42;
 
-        public static final int opticalSensorPort = 8;
-        public static final int opticalSensorPortAnalog = 0;
+        public static final int opticalSensorPort = 0;
 
         public static final double largeRollerMotorIntakeRpm = 2600;
         public static final double smallRollerMotorIntakeRpm = 2100;
@@ -136,8 +135,8 @@ public final class Constants
         public static final int leftMotorChannel = 45;
         public static final int rightMotorChannel = 46;
 
-        public static final double ampRpm = 1500.0;
-        public static final double speakerRpm = 3700.0;
+        public static final double ampRpm = 1000.0;
+        public static final double speakerRpm = 5250.0;
 
         // Tolerance for determining if motors are at the desired velocity:
         public static final double rpmTolerance = 50;
