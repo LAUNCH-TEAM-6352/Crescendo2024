@@ -40,7 +40,6 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -137,7 +136,7 @@ public class RobotContainer
             : Optional.empty();
 
         intake = gameData.isBlank() || gameData.contains("-i-")
-            ? Optional.of(new Intake())
+            ? Optional.of(new Intake(codriverGamepad))
             : Optional.empty();
 
         indexer = gameData.isBlank() || gameData.contains("-idx-")

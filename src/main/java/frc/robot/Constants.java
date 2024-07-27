@@ -27,7 +27,7 @@ public final class Constants
     {
         public static final double shootWaitSecs = 3;
         public static final double shootTimeout = 3;
-        public static final double intakeTimeout = 2.4;
+        public static final double intakeTimeout = 5.0;
     }
 
     public static final class OperatorConstants
@@ -106,6 +106,8 @@ public final class Constants
 
         public static final IdleMode motorIdleMode = IdleMode.kBrake;
 
+        public static final double noteSensorVoltageThreshold = 0.8;
+
         public static final class PIDConstants
         {
             public static final double kP = 0.000024;
@@ -133,8 +135,8 @@ public final class Constants
         public static final int leftMotorChannel = 45;
         public static final int rightMotorChannel = 46;
 
-        public static final double ampRpm = 1500.0;
-        public static final double speakerRpm = 3700.0;
+        public static final double ampRpm = 300.0;
+        public static final double speakerRpm = 4500.0;
 
         // Tolerance for determining if motors are at the desired velocity:
         public static final double rpmTolerance = 50;
@@ -169,7 +171,7 @@ public final class Constants
         public static final double maximumRotationRateRps = 4 * Math.PI;
 
         // Don't mess with this!
-        public static final double maxModuleSpeedMps = 5.0;
+        public static final double maxModuleSpeedMps = 4.0;
 
         public static final double gearRatioDriveMk4 = 8.14;
         public static final double gearRatioDriveMk4i = 8.14;
@@ -237,6 +239,7 @@ public final class Constants
             public static final String largeRollerEjectRpm = "Itk Lg Ej RPM";
             public static final String smallRollerEjectRpm = "Itk Sm Ej RPM";
 
+            public static final String noteSensorVoltage = "Note Sensor V";
             public static final String hasNote = "Has Note";
         }
 
@@ -248,5 +251,4 @@ public final class Constants
             public static final String rpmTolerance = "Shoot RPM Tol";
         }
     }
-
 }
