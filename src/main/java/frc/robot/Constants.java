@@ -25,7 +25,7 @@ public final class Constants
 
     public static final class AutoConstants
     {
-        public static final double shootWaitSecs = 3;
+        public static final double shootWaitSecs = 1;
         public static final double shootTimeout = 3;
         public static final double intakeTimeout = 5.0;
     }
@@ -135,7 +135,7 @@ public final class Constants
         public static final int leftMotorChannel = 45;
         public static final int rightMotorChannel = 46;
 
-        public static final double ampRpm = 300.0;
+        public static final double ampRpm = 1200.0;
         public static final double speakerRpm = 4500.0;
 
         // Tolerance for determining if motors are at the desired velocity:

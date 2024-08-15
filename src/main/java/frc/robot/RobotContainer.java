@@ -47,7 +47,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -170,8 +169,6 @@ public class RobotContainer
      */
     private void configurePathPlannerNamedCommands()
     {
-        // Register a named command like this:
-        NamedCommands.registerCommand("wait5", new WaitCommand(5));
         NamedCommands.registerCommand("Shoot Wait", new Wait(AutoKeys.shootWaitTime));
         NamedCommands.registerCommand("Shoot Speaker",
             new ShootNoteIntoSpeaker(indexer.get(), shooter.get(), manipulator.get(), AutoKeys.shootTimeout));
