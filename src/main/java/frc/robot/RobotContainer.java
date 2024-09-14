@@ -359,6 +359,9 @@ public class RobotContainer
         autoChooser.addOption("Leave From Source", new PathPlannerAuto("Leave"));
         autoChooser.addOption("Defensive", new PathPlannerAuto("Defensive"));
 
+        // added for ARL
+        autoChooser.addOption("Finals", new PathPlannerAuto("Finals"));
+
         SmartDashboard.putData("Auto Selection", autoChooser);
     }
 
