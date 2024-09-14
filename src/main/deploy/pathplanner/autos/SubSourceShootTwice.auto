@@ -1,0 +1,68 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7792735585471171,
+      "y": 4.337866857551897
+    },
+    "rotation": -58.240519915187164
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Wait"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Speaker"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Note"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeaveSubSourceNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ReturnSubSourceNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Wait"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Speaker"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

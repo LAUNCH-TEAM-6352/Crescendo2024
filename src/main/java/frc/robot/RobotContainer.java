@@ -361,6 +361,11 @@ public class RobotContainer
 
         // added for ARL
         autoChooser.addOption("Finals", new PathPlannerAuto("Finals"));
+        
+        //New Shoot Twice Autos
+        autoChooser.addOption("Source Sub Shoot Twice", new PathPlannerAuto("SubSourceShootTwice"));
+        autoChooser.addOption("Amp Sub Shoot Twice", new PathPlannerAuto("SubAmpShootTwice"));
+        
 
         SmartDashboard.putData("Auto Selection", autoChooser);
     }
