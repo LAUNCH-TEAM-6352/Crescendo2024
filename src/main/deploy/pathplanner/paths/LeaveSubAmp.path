@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.8259172881982126,
-        "y": 6.688710831967119
+        "x": 0.765872873427322,
+        "y": 6.711356821640298
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8259172881982146,
-        "y": 6.688710831967119
+        "x": 1.7658728734273241,
+        "y": 6.711356821640298
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "SubAmpStart"
     },
     {
       "anchor": {

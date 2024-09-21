@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4236181936988237,
-      "y": 5.528266402995241
+      "x": 0.7792735585471171,
+      "y": 4.337866857551897
     },
-    "rotation": -0.6315914349029249
+    "rotation": -58.240519915187164
   },
   "command": {
     "type": "sequential",
@@ -36,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LeaveSubMiddleStraight"
+                  "pathName": "LeaveSubSourceNote"
                 }
               }
             ]
@@ -45,7 +45,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "ReturnSubMiddleStraight"
+            "pathName": "ReturnSubSourceNote"
           }
         },
         {

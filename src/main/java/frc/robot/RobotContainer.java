@@ -345,22 +345,25 @@ public class RobotContainer
 
     private void configureAutoChooser(SendableChooser<Command> autoChooser)
     {
-        
+        //Shoot Twice Autos
         autoChooser.addOption("Center Sub Shoot Twice", new PathPlannerAuto("SubMiddleShootTwice"));
-
-        autoChooser.addOption("Amp Sub Shoot & Leave", getShootFromSubAmpAndLeaveCommand());
+        autoChooser.addOption("Source Sub Shoot Twice", new PathPlannerAuto("SubSourceShootTwice"));
+        autoChooser.addOption("Amp Sub Shoot Twice", new PathPlannerAuto("SubAmpShootTwice"));
+        
+        //Shoot and Leave Autos
         autoChooser.addOption("Center Sub Shoot & Leave", getShootFromSubMiddleAndLeaveCommand());
         autoChooser.addOption("Source Sub Shoot & Leave", getShootFromSubSourceAndLeaveCommand());
+        autoChooser.addOption("Amp Sub Shoot & Leave", getShootFromSubAmpAndLeaveCommand());
 
-        autoChooser.addOption("Amp Sub Shoot",  new PathPlannerAuto("SubAmpShoot"));
+        //Shoot Autos
         autoChooser.addOption("Center Sub Shoot", new PathPlannerAuto("SubMiddleShoot"));
         autoChooser.addOption("Source Sub Shoot", new PathPlannerAuto("SubSourceShoot"));
+        autoChooser.addOption("Amp Sub Shoot",  new PathPlannerAuto("SubAmpShoot"));
 
+        //Other
         autoChooser.addOption("Leave From Source", new PathPlannerAuto("Leave"));
-        autoChooser.addOption("Defensive", new PathPlannerAuto("Defensive"));
+        autoChooser.addOption("Leave From Source, Return and Shoot", new PathPlannerAuto("SourceLeaveAndShoot"));
 
-        // added for ARL
-        autoChooser.addOption("Finals", new PathPlannerAuto("Finals"));
 
         SmartDashboard.putData("Auto Selection", autoChooser);
     }
