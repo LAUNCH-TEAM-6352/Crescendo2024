@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.8352460341284319,
-        "y": 6.716697069757776
+        "x": 0.765872873427322,
+        "y": 6.711356821640298
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3203408224998268,
-        "y": 6.9872307017341315
+        "x": 1.1370701824181353,
+        "y": 6.911616126045717
       },
       "isLocked": false,
       "linkedName": "SubAmpStart"
@@ -20,8 +20,8 @@
         "y": 6.977901955803912
       },
       "prevControl": {
-        "x": 1.8129401713348883,
-        "y": 6.977901955803912
+        "x": 2.0141563055102223,
+        "y": 7.019764444338906
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,8 +30,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.45,
-      "rotationDegrees": 0,
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": 2.1139608568101598,
       "rotateFast": false
     }
   ],
