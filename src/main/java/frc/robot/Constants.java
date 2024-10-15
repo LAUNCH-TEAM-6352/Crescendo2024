@@ -183,7 +183,7 @@ public final class Constants
     public static class DriveConstants
     {
         public static final boolean isFieldRelative = true;
-        public static final TelemetryVerbosity swerveDriveTelemetryVerbosity = TelemetryVerbosity.HIGH;
+        public static final TelemetryVerbosity swerveDriveTelemetryVerbosity = TelemetryVerbosity.MACHINE;
     }
 
     public static class TestConstants
